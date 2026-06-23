@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered restaurant recommendation system. Get personalized dining suggestions powered by Groq LLM and Zomato data.">
+    <meta name="theme-color" content="#E23744">
+    <title>Zomato AI — Restaurant Recommender</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-wrapper">
+
+        <!-- ── Navbar ── -->
+        <nav class="navbar" id="navbar">
+            <div class="container">
+                <div class="nav-left">
+                    <a href="#" class="nav-brand" id="nav-brand">
+                        <span class="nav-brand-icon">🍽️</span>
+                        <span class="nav-brand-text">Epicure AI</span>
+                    </a>
+                    <ul class="nav-links">
+                        <li><a href="#" class="active" id="nav-explore">Explore</a></li>
+                        <li><a href="#" id="nav-history">History</a></li>
+                        <li><a href="#" id="nav-profile">Profile</a></li>
+                    </ul>
+                </div>
+                <div class="nav-right">
+                    <button class="nav-icon-btn" id="btn-notifications" title="Notifications" aria-label="Notifications">🔔</button>
+                    <button class="nav-icon-btn" id="btn-settings" title="Settings" aria-label="Settings">⚙️</button>
+                    <button class="btn-signin" id="btn-signin">Sign In</button>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <div class="container">
+                <!-- ── Hero ── -->
+                <section class="hero-section" id="hero-section">
+                    <h1 class="hero-title">Zomato AI Recommender</h1>
+                    <p class="hero-subtitle">Your personal culinary concierge, powered by AI.</p>
+                </section>
+
+                <!-- ── Preference Form ── -->
+                <section class="form-card" id="preference-form-card">
+                    <form id="preference-form" class="form-grid" autocomplete="off">
+                        <!-- Location -->
+                        <div class="form-field">
+                            <label for="location-select">Location</label>
+                            <select id="location-select" required>
+                                <option value="">Select City</option>
+                            </select>
+                        </div>
+
+                        <!-- Budget -->
+                        <div class="form-field">
+                            <label for="budget-select">Budget</label>
+                            <select id="budget-select" required>
+                                <option value="">Choose Budget</option>
+                                <option value="low">💰 Low — Under ₹500</option>
+                                <option value="medium">💰💰 Medium — ₹500–₹1500</option>
+                                <option value="high">💰💰💰 High — Above ₹1500</option>
+                            </select>
+                        </div>
+
+                        <!-- Cuisine -->
+                        <div class="form-field">
+                            <label for="cuisine-select">Cuisine</label>
+                            <select id="cuisine-select">
+                                <option value="">Choose Cuisine</option>
+                            </select>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="form-field rating-field">
+                            <div class="rating-header">
+                                <label for="rating-slider">Minimum Rating</label>
+                                <span class="rating-value" id="rating-display">4.0+</span>
+                            </div>
+                            <div class="rating-slider-container">
+                                <input type="range" id="rating-slider" class="rating-slider"
+                                       min="0" max="5" step="0.1" value="4.0">
+                                <div class="rating-labels">
+                                    <span>Any</span>
+                                    <span>5.0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Preferences -->
+                        <div class="form-field additional-field">
+                            <label for="additional-prefs">Additional Preferences</label>
+                            <textarea id="additional-prefs"
+                                      placeholder="e.g. Quiet for a date, Vegan friendly, Rooftop seating…"
+                                      rows="3"></textarea>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-recommend" id="btn-recommend">
+                                <span class="sparkle-icon">✨</span>
+                                <span class="btn-text">Get Recommendations</span>
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- ── Error Banner (hidden by default) ── -->
+                <div id="error-section" class="hidden"></div>
+
+                <!-- ── AI Summary (hidden by default) ── -->
+                <div id="ai-summary-section" class="hidden"></div>
+
+                <!-- ── Loading Skeleton (hidden by default) ── -->
+                <div id="loading-section" class="hidden"></div>
+
+                <!-- ── Results (hidden by default) ── -->
+                <div id="results-section" class="hidden"></div>
+
+                <!-- ── Empty State (hidden by default) ── -->
+                <div id="empty-state" class="hidden"></div>
+            </div>
+        </main>
+
+        <!-- ── Footer ── -->
+        <footer class="site-footer" id="site-footer">
+            <div class="container">
+                <div class="footer-inner">
+                    <ul class="footer-links">
+                        <li><a href="#" id="link-privacy">Privacy Policy</a></li>
+                        <li><a href="#" id="link-terms">Terms of Service</a></li>
+                        <li><a href="#" id="link-cookies">Cookie Policy</a></li>
+                        <li><a href="#" id="link-contact">Contact Us</a></li>
+                    </ul>
+                    <span class="footer-copyright">&copy; 2024 Ephemeral Epicure. All rights reserved.</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

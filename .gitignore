@@ -1,0 +1,36 @@
+# ─── Python ──────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ─── Virtual Environment ────────────────────────────
+venv/
+.venv/
+env/
+
+# ─── Environment Variables ──────────────────────────
+.env
+*.env
+!.env.example
+
+# ─── IDE / Editor ───────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ─── OS ─────────────────────────────────────────────
+Thumbs.db
+
+# ─── Jupyter ────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ─── HuggingFace Cache ─────────────────────────────
+.cache/
