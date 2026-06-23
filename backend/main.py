@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from pathlib import Path
+import os
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
@@ -13,6 +14,7 @@ from backend.services.prompt_builder import build_recommendation_prompt
 from backend.services.llm_client import groq_client
 
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+FRONTEND_URL = os.getenv("FRONTEND_URL", "")
 
 logger = logging.getLogger(__name__)
 
@@ -28,9 +30,19 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Build allowed origins — production Vercel URL + local dev origins
+_allowed_origins = [
+    "http://localhost:5500",   # VS Code Live Server
+    "http://localhost:8000",   # FastAPI static serving
+    "http://127.0.0.1:5500",
+    "http://127.0.0.1:8000",
+]
+if FRONTEND_URL:
+    _allowed_origins.insert(0, FRONTEND_URL)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_allowed_origins if FRONTEND_URL else ["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )

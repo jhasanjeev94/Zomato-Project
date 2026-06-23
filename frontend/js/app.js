@@ -3,7 +3,9 @@
 // Handles form interaction, API calls, and dynamic rendering
 // ============================================================
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:8000'
+  : 'https://your-railway-url.up.railway.app';  // TODO: Replace with your actual Railway URL after deployment
 
 // ── DOM References ──
 const elements = {
