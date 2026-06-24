@@ -1,20 +1,22 @@
 """
 Data loading service for the Zomato restaurant dataset.
 
-Loads the dataset from HuggingFace, preprocesses it,
+Loads the dataset from a bundled local CSV file, preprocesses it,
 and caches it in memory for fast access.
 """
 
 import logging
+from pathlib import Path
 from typing import Optional
 
 import pandas as pd
-from datasets import load_dataset
 
-from backend.config import settings
 from backend.utils.preprocessing import preprocess_dataframe
 
 logger = logging.getLogger(__name__)
+
+# Path to the bundled CSV dataset
+_DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "zomato_restaurants.csv"
 
 # In-memory cache for the preprocessed DataFrame
 _cached_df: Optional[pd.DataFrame] = None
@@ -22,13 +24,13 @@ _cached_df: Optional[pd.DataFrame] = None
 
 def load_restaurant_data(force_reload: bool = False) -> pd.DataFrame:
     """
-    Load and cache the Zomato dataset from HuggingFace.
+    Load and cache the Zomato dataset from the bundled CSV.
 
-    On first call, downloads the dataset, preprocesses it,
+    On first call, reads the CSV, preprocesses it,
     and stores it in memory. Subsequent calls return the cached copy.
 
     Args:
-        force_reload: If True, bypass cache and reload from HuggingFace.
+        force_reload: If True, bypass cache and reload from disk.
 
     Returns:
         Preprocessed DataFrame of restaurant data.
@@ -42,9 +44,8 @@ def load_restaurant_data(force_reload: bool = False) -> pd.DataFrame:
         return _cached_df
 
     try:
-        logger.info(f"Loading dataset: {settings.DATASET_NAME}")
-        dataset = load_dataset(settings.DATASET_NAME, split="train")
-        raw_df = dataset.to_pandas()
+        logger.info(f"Loading dataset from: {_DATA_FILE}")
+        raw_df = pd.read_csv(_DATA_FILE)
         logger.info(
             f"Raw dataset loaded: {len(raw_df)} rows, "
             f"{len(raw_df.columns)} columns"
@@ -64,7 +65,7 @@ def load_restaurant_data(force_reload: bool = False) -> pd.DataFrame:
     except Exception as e:
         logger.error(f"Failed to load dataset: {e}")
         raise RuntimeError(
-            f"Could not load dataset '{settings.DATASET_NAME}' from HuggingFace. "
+            f"Could not load dataset from '{_DATA_FILE}'. "
             f"Error: {e}"
         ) from e
 
