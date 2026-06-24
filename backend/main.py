@@ -32,6 +32,7 @@ app = FastAPI(
 
 # Build allowed origins — production Vercel URL + local dev origins
 _allowed_origins = [
+    "https://zomato-project-psi.vercel.app",  # Vercel frontend
     "http://localhost:5500",   # VS Code Live Server
     "http://localhost:8000",   # FastAPI static serving
     "http://127.0.0.1:5500",
