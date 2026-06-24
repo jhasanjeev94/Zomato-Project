@@ -5,7 +5,7 @@
 
 const API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:8000'
-  : '';  // Same origin — frontend is served by the FastAPI backend
+  : 'https://web-production-3e7f5.up.railway.app';
 
 // ── DOM References ──
 const elements = {
