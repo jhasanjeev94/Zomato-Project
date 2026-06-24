@@ -5,7 +5,7 @@
 
 const API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:8000'
-  : 'https://your-railway-url.up.railway.app';  // TODO: Replace with your actual Railway URL after deployment
+  : '';  // Same origin — frontend is served by the FastAPI backend
 
 // ── DOM References ──
 const elements = {
