@@ -7,15 +7,19 @@ with a time-to-live (TTL) mechanism to avoid stale data.
 
 import json
 import logging
+import os
 import time
 from pathlib import Path
 from typing import Optional
 
 from backend.config import settings
 
-logger = logging.getLogger(__name__)
+if os.environ.get("VERCEL"):
+    CACHE_DIR = Path("/tmp")
+else:
+    CACHE_DIR = Path(settings.SCRAPE_CACHE_DIR)
 
-CACHE_DIR = Path(settings.SCRAPE_CACHE_DIR)
+logger = logging.getLogger(__name__)
 
 
 def get_cached_data(city: str) -> Optional[list[dict]]:

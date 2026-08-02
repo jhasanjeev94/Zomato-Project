@@ -6,7 +6,7 @@
 
 const API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:8000'
-  : 'https://web-production-3e7f5.up.railway.app';
+  : ''; // Relative path for Vercel Serverless
 
 // ── DOM References ──
 const elements = {
