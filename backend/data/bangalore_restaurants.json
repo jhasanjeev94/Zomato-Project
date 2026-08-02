@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Taal Bar at Ishaara",
+    "city": "Bangalore",
+    "location": "Street Bangalore",
+    "address": "1st Floor, located in 1 Sobha Mall, Shop F-3, Church Street, Bangalore",
+    "cuisines": "Modern Indian, Beverages, Kebab",
+    "aggregate_rating": 4.3,
+    "votes": 20,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/bangalore/taal-bar-at-ishaara-church-street-bangalore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Cha Hong Kong Eating House",
+    "city": "Bangalore",
+    "location": "Street Bangalore",
+    "address": "76-20-50, First Floor, Unit Number F3, F4, F5 and F6, Sobha, Church Street, Bangalore",
+    "cuisines": "Chinese, Desserts, Momos",
+    "aggregate_rating": 4.4,
+    "votes": 1300,
+    "image_url": "https://b.zmtcdn.com/data/pictures/3/22243603/35f52ffd753dec3daf66e06b5f815f7c_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/bangalore/cha-hong-kong-eating-house-church-street-bangalore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Ishaara",
+    "city": "Bangalore",
+    "location": "Road Bangalore",
+    "address": "Units F3, F4, F5 and F6, 1 Sobha, BBMP 50, Residency Road, Bangalore",
+    "cuisines": "Biryani, Seafood, Mughlai",
+    "aggregate_rating": 4.2,
+    "votes": 1511,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/22243456/f024eb058c7c164ff81ac1e8410ca08b_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/bangalore/ishaara-residency-road-bangalore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Muro",
+    "city": "Bangalore",
+    "location": "Street Bangalore",
+    "address": "5, Museum Road, Shanthala Nagar, Ashok Nagar, Church Street, Bangalore",
+    "cuisines": "Thai, Cantonese, Salad",
+    "aggregate_rating": 4.4,
+    "votes": 3055,
+    "image_url": "https://b.zmtcdn.com/data/pictures/8/20930988/2a064933f8bdd261df8050594ab51c8b_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/bangalore/muro-church-street-bangalore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Flo",
+    "city": "Bangalore",
+    "location": "Street Bangalore",
+    "address": "3, MSR West Park, Ashok Nagar, Church Street, Bangalore",
+    "cuisines": "Asian, North Indian, Continental",
+    "aggregate_rating": 4.0,
+    "votes": 5376,
+    "image_url": "https://b.zmtcdn.com/data/pictures/chains/4/19952254/18184094143b73af64b6d892b3a17b9f_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/bangalore/flo-church-street-bangalore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "CBD- Central Bar District",
+    "city": "Bangalore",
+    "location": "Road Bangalore",
+    "address": "3, Church St, Shanthala Nagar, MSR, MG Road, Bangalore",
+    "cuisines": "North Indian, Chinese, South Indian",
+    "aggregate_rating": 4.4,
+    "votes": 3407,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/21913226/39cec2d3c0797d21e0a4c047f4ccdb93_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/bangalore/cbd-central-bar-district-mg-road-bangalore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Over Coffee Cafe & Wine Bar",
+    "city": "Bangalore",
+    "location": "Road Bangalore",
+    "address": "41, Ground Floor, Cristu Complex, Ashok Nagar, Lavelle Road, Bangalore",
+    "cuisines": "European, Italian, Continental",
+    "aggregate_rating": 4.0,
+    "votes": 1842,
+    "image_url": "https://b.zmtcdn.com/data/pictures/1/20626791/7bafabdfd670d85e5bd4e8e96a2b3972_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/bangalore/over-coffee-cafe-wine-bar-lavelle-road-bangalore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Shiro",
+    "city": "Bangalore",
+    "location": "Lavelle Road",
+    "address": "2nd Floor, UB City Mall, Vittal Mallya Road, Near Lavelle Road, Bangalore",
+    "cuisines": "Japanese, Sushi, Asian",
+    "aggregate_rating": 4.2,
+    "votes": 5360,
+    "image_url": "https://b.zmtcdn.com/data/pictures/0/50890/031684e4deaead86cb1487bd1f698959_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/bangalore/shiro-lavelle-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Cahoots",
+    "city": "Bangalore",
+    "location": "Road Bangalore",
+    "address": "48/2, 48/3, Brigade Garden, Shanthinagara, Brigade Road, Bangalore",
+    "cuisines": "North Indian, South Indian, Chinese",
+    "aggregate_rating": 3.7,
+    "votes": 1547,
+    "image_url": "https://b.zmtcdn.com/data/pictures/2/21959252/fba6e2e215dad9f7c1650d19a96fd6ef_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/bangalore/cahoots-brigade-road-bangalore/info",
+    "average_cost_for_two": 0
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Out Of The Box Courtyard",
+    "city": "Delhi Ncr",
+    "location": "New Delhi",
+    "address": "B 14/1-6, Middle Circle, Connaught Place, New Delhi",
+    "cuisines": "Continental, North Indian, Italian",
+    "aggregate_rating": 4.2,
+    "votes": 4568,
+    "image_url": "https://b.zmtcdn.com/data/pictures/1/19495371/87eaef59996ca008a519054014accbaa_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ncr/out-of-the-box-courtyard-1-connaught-place-new-delhi/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "My Bar Headquarters",
+    "city": "Delhi Ncr",
+    "location": "New Delhi",
+    "address": "N-49, SF, CP, Chankya Puri, Connaught Place, New Delhi",
+    "cuisines": "North Indian, Chinese, Pizza",
+    "aggregate_rating": 3.5,
+    "votes": 6186,
+    "image_url": "https://b.zmtcdn.com/data/pictures/7/311057/15ecea5e19d35b31311d398fcb1436f0_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ncr/my-bar-headquarters-connaught-place-new-delhi/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Farzi Cafe",
+    "city": "Delhi Ncr",
+    "location": "New Delhi",
+    "address": "38/39, Block E, Inner Circle, Connaught Place, New Delhi",
+    "cuisines": "Bar Food, North Indian, Burger",
+    "aggregate_rating": 4.1,
+    "votes": 7702,
+    "image_url": "https://b.zmtcdn.com/data/pictures/3/18233593/b482d990f728163e5d5c0996c56d931a_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ncr/farzi-cafe-connaught-place-new-delhi/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Connaught Club House",
+    "city": "Delhi Ncr",
+    "location": "New Delhi",
+    "address": "54, Ground Floor, Tolstoy Lane, Atul Grove Road, Connaught Place, New Delhi",
+    "cuisines": "North Indian, Mughlai, Italian",
+    "aggregate_rating": 4.3,
+    "votes": 4062,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/19295106/8fbf0b59a34748767bd336e4443b02e6_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ncr/connaught-club-house-connaught-place-new-delhi/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "The Darzi Bar & Kitchen",
+    "city": "Delhi Ncr",
+    "location": "Info",
+    "address": "H 55, 1st Floor, Outer Circle, Connaught Place, New Delhi",
+    "cuisines": "North Indian, Chinese, Asian",
+    "aggregate_rating": 3.8,
+    "votes": 8115,
+    "image_url": "https://b.zmtcdn.com/data/pictures/1/18423151/e6cbcb3162c11adcf58677f1c4110d9b_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/TheDarziBar/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Ministry Of Beer",
+    "city": "Delhi Ncr",
+    "location": "New Delhi",
+    "address": "M-43, Connaught Circle, Shankar Market, Block M, Connaught Place, New Delhi",
+    "cuisines": "North Indian, Italian, Asian",
+    "aggregate_rating": 4.3,
+    "votes": 15,
+    "image_url": "https://b.zmtcdn.com/data/pictures/7/18418277/20b12b311d6bdec919a8a1f5796fd44d_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ncr/ministry-of-beer-connaught-place-new-delhi/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Somewhere Restaurant & Bar",
+    "city": "Delhi Ncr",
+    "location": "New Delhi",
+    "address": "H-10, Ground Floor, H Block, Laxmi Building, Connaught Place, New Delhi",
+    "cuisines": "North Indian, Asian, European",
+    "aggregate_rating": 3.6,
+    "votes": 8413,
+    "image_url": "https://b.zmtcdn.com/data/pictures/8/20243538/3224c047011af9a297160dd0605d1352_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ncr/somewhere-restaurant-bar-connaught-place-new-delhi/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Local",
+    "city": "Delhi Ncr",
+    "location": "New Delhi",
+    "address": "11, Ground Floor, Atmaram Mansion, KG Marg, Connaught Place, New Delhi",
+    "cuisines": "North Indian, Continental, Mexican",
+    "aggregate_rating": 4.3,
+    "votes": 15,
+    "image_url": "https://b.zmtcdn.com/data/pictures/0/18382360/46e428b78f369f8fa533cfe29029d0e1_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ncr/local-connaught-place-new-delhi/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Ivoryy Fusion Bar",
+    "city": "Delhi Ncr",
+    "location": "New Delhi",
+    "address": "F-60, 2nd Floor, Malhotra Building, Connaught Place, New Delhi",
+    "cuisines": "Cafe, Asian, Modern Indian",
+    "aggregate_rating": 4.1,
+    "votes": 2106,
+    "image_url": "https://b.zmtcdn.com/data/pictures/0/21844770/04066b907d3bb1c9fb0845d9819fb06c_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ncr/ivoryy-fusion-bar-connaught-place-new-delhi/info",
+    "average_cost_for_two": 0
+  }
+]

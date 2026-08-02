@@ -1,0 +1,110 @@
+[
+  {
+    "name": "NutriPlate India",
+    "city": "Lucknow",
+    "location": "India Mahanagar",
+    "address": "11 B, Ram Krishna Marg, Near IT College Metro Station, Mahanagar, Lucknow",
+    "cuisines": "Sandwich, Healthy Food, Beverages",
+    "aggregate_rating": 4.5,
+    "votes": 3008,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/19114324/8232e30cb9f9d663ac2e91929b6e7c67_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/lucknow/nutriplate-india-mahanagar/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Kool Break",
+    "city": "Lucknow",
+    "location": "Break Hazratganj",
+    "address": "17\\/3, Ashok Marg, LKO, Nagar Nigam food safety zone 2, Hazratganj, Lucknow",
+    "cuisines": "Chinese, Indo-Chinese, Mughlai",
+    "aggregate_rating": 4.0,
+    "votes": 3430,
+    "image_url": "https://b.zmtcdn.com/data/pictures/chains/1/800641/c8997f14ee6f888aa90201b90421d6e7_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/lucknow/kool-break-hazratganj/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Haloz - Flame Crafted Crust",
+    "city": "Lucknow",
+    "location": "Crust Hazratganj",
+    "address": "5, Ground Floor, Apex Tower, Habibullah Estate Road, Hazratganj, Lucknow",
+    "cuisines": "Italian, Pizza, Mexican",
+    "aggregate_rating": 4.1,
+    "votes": 191,
+    "image_url": "https://b.zmtcdn.com/data/pictures/5/22226055/18b87509d0352c7f5e8d921446d38d28_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/lucknow/haloz-flame-crafted-crust-hazratganj/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "The Coconut Chutney",
+    "city": "Lucknow",
+    "location": "Chutney Mahanagar",
+    "address": "Shop 39/54, Gole Market, Hazratganj, Mahanagar, Lucknow",
+    "cuisines": "South Indian, Juices, Beverages",
+    "aggregate_rating": 4.0,
+    "votes": 952,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/21163234/eba96bad05dba20db7f85f4e0f9c6d36_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/lucknow/the-coconut-chutney-mahanagar/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "The Chocolate Room",
+    "city": "Lucknow",
+    "location": "Room Hazratganj",
+    "address": "Shop- 4, Ground Floor, Apex Tower, Habibullah Estate, Mahatma Gandhi Marg, Hazratganj, Lucknow",
+    "cuisines": "Bakery, Cafe, Coffee",
+    "aggregate_rating": 4.2,
+    "votes": 5875,
+    "image_url": "https://b.zmtcdn.com/data/pictures/chains/9/18564719/badc0032f39e3834be94d77f519430bf_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/lucknow/the-chocolate-room-hazratganj/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Trucco's",
+    "city": "Lucknow",
+    "location": "Hazratganj",
+    "address": "3, Upper Ground Floor, Apex Tower, Habibbulah Estate, Hazratganj, Lucknow",
+    "cuisines": "Pizza, Pasta, Asian",
+    "aggregate_rating": 4.5,
+    "votes": 950,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/21927004/7c464c244234293abd97a52395ce9150_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/lucknow/truccos-hazratganj/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Masaki Cafe Couture",
+    "city": "Lucknow",
+    "location": "Couture Lalbagh",
+    "address": "07 - KD 3-02, Ground Floor, Near KD Singh Stadium Metro Station, Lalbagh, Lucknow",
+    "cuisines": "Cafe, Italian, Mexican",
+    "aggregate_rating": 4.3,
+    "votes": 2683,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/20499366/b8cc5ea1aadc3beafc87a74ec0d26d29_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/lucknow/masaki-cafe-couture-lalbagh/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Food Mohalla",
+    "city": "Lucknow",
+    "location": "Mohalla Kapoorthala",
+    "address": "M-1/88, Lakme Salon, First Floor, Sector B, Kapoorthala, Lucknow",
+    "cuisines": "Burger, North Indian, Chinese",
+    "aggregate_rating": 4.2,
+    "votes": 1456,
+    "image_url": "https://b.zmtcdn.com/data/pictures/chains/2/20591622/7b374f138174357c32b231f2543f7937_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/lucknow/food-mohalla-kapoorthala/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Robot Restaurant - The Yellow House",
+    "city": "Lucknow",
+    "location": "House Aliganj",
+    "address": "Sector A, Chandralok, Chandralok Colony, Aliganj, Lucknow",
+    "cuisines": "North Indian, Chinese, Seafood",
+    "aggregate_rating": 4.1,
+    "votes": 1004,
+    "image_url": "https://b.zmtcdn.com/data/pictures/0/20846550/7bc0902d2b8ca55771113e31cabb3650_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/lucknow/robot-restaurant-the-yellow-house-aliganj/info",
+    "average_cost_for_two": 0
+  }
+]

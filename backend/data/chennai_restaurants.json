@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Message In A Bottle",
+    "city": "Chennai",
+    "location": "Bottle Egmore",
+    "address": "3, Ansari Estate, Gandhi Irwin Road, Egmore, Chennai",
+    "cuisines": "Bar Food, North Indian, Chinese",
+    "aggregate_rating": 4.2,
+    "votes": 1638,
+    "image_url": "https://b.zmtcdn.com/data/pictures/7/19522797/112da465b082c9785455aef12fe4631b_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chennai/message-in-a-bottle-egmore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Poppadum",
+    "city": "Chennai",
+    "location": "1 Kilpauk",
+    "address": "12/3A, Ormes Road, Kilpauk, Chennai",
+    "cuisines": "North Indian, Italian, Fast Food",
+    "aggregate_rating": 4.4,
+    "votes": 138,
+    "image_url": "https://b.zmtcdn.com/data/pictures/5/22651775/41a4d8537ebc0a44b0d0799cc7b08e59_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chennai/poppadum-1-kilpauk/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Waves Bar & Lounge",
+    "city": "Chennai",
+    "location": "Lounge Egmore",
+    "address": "Hotel Ramada, Ansari Estate, Egmore, Chennai",
+    "cuisines": "Finger Food, North Indian, Continental",
+    "aggregate_rating": 4.3,
+    "votes": 415,
+    "image_url": "https://b.zmtcdn.com/data/pictures/8/67458/cc5631668049890863c706f6d780f3f8_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chennai/waves-bar-lounge-egmore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Symphony",
+    "city": "Chennai",
+    "location": "Egmore",
+    "address": "2A, Ponniamman Koil St, Ansari Estate, Ramada By Wyndham, Egmore, Chennai",
+    "cuisines": "Biryani, North Indian, Continental",
+    "aggregate_rating": 4.1,
+    "votes": 2722,
+    "image_url": "https://b.zmtcdn.com/data/pictures/chains/6/67366/b0cd10550689268154e828dd95e75713_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chennai/symphony-egmore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Enoki",
+    "city": "Chennai",
+    "location": "Egmore",
+    "address": "3, Gandhi-Irwin Road, Near CMDA Buildings, Egmore, Chennai",
+    "cuisines": "Sushi, Japanese, Asian",
+    "aggregate_rating": 4.5,
+    "votes": 2252,
+    "image_url": "https://b.zmtcdn.com/data/pictures/3/20936373/a88aaf387a1422db6a2aee91384d30ac_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chennai/enoki-egmore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Babal Da Punjabi Dabha",
+    "city": "Chennai",
+    "location": "Dabha Egmore",
+    "address": "114/9, Poonamallee High Road, Egmore, Chennai",
+    "cuisines": "North Indian, Oriental, Biryani",
+    "aggregate_rating": 4.3,
+    "votes": 36,
+    "image_url": "https://b.zmtcdn.com/data/pictures/chains/3/66963/a016e5dbcffd59653fff88bd5124fa93_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chennai/babal-da-punjabi-dabha-egmore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Champions Bar",
+    "city": "Chennai",
+    "location": "Bar Egmore",
+    "address": "Hotel Marina Inn, 55/31, Gandhi Irwin Road, Egmore, Chennai",
+    "cuisines": "Finger Food",
+    "aggregate_rating": 4.4,
+    "votes": 3281,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/chennai/champions-bar-egmore/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "The Great Escape",
+    "city": "Chennai",
+    "location": "Escape Kilpauk",
+    "address": "3rd Floor, 68, Taylors Rd, Telecom Quarters, Kilpauk, Chennai, Tamil Nadu",
+    "cuisines": "Chinese, Pasta, Pizza",
+    "aggregate_rating": 4.3,
+    "votes": 87,
+    "image_url": "https://b.zmtcdn.com/data/pictures/9/22572339/0938fb2b-bb4c-4987-98dc-670458abbd8f_o2_featured_v2.png",
+    "zomato_url": "https://www.zomato.com/chennai/the-great-escape-kilpauk/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Hundreds Bistro",
+    "city": "Chennai",
+    "location": "1 Chetpet",
+    "address": "105, Near Shoppers Stop, Harrington Road, Chetpet, Chennai",
+    "cuisines": "Cafe, North Indian, Continental",
+    "aggregate_rating": 4.5,
+    "votes": 989,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/chennai/hundreds-bistro-1-chetpet/info",
+    "average_cost_for_two": 0
+  }
+]

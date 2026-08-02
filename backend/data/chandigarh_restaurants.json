@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Ghazal",
+    "city": "Chandigarh",
+    "location": "Sector 17",
+    "address": "SCO 189-191, Sector 17, Chandigarh",
+    "cuisines": "North Indian, Chinese, Mughlai",
+    "aggregate_rating": 4.4,
+    "votes": 1836,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/120126/c3e02bd1c579b4cbedb9ee4447b53cb0_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chandigarh/ghazal-sector-17/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Cafe Olio",
+    "city": "Chandigarh",
+    "location": "Sector 35",
+    "address": "SCO 329D, Sector 35, Chandigarh",
+    "cuisines": "Cafe, European, Fast Food",
+    "aggregate_rating": 4.4,
+    "votes": 518,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/chandigarh/cafe-olio-sector-35/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Tulum Rooftop Bar & Kitchen",
+    "city": "Chandigarh",
+    "location": "Sector 34",
+    "address": "The Toy Hotel, SCO 165-167, Sector 34 A, Sector 34, Chandigarh",
+    "cuisines": "Continental, Mexican, Pizza",
+    "aggregate_rating": 4.1,
+    "votes": 643,
+    "image_url": "https://b.zmtcdn.com/data/pictures/5/19584185/ea11d6d83887af2a974d009f20c142f5_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chandigarh/tulum-rooftop-bar-kitchen-sector-34/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Victoria's Boutique Café",
+    "city": "Chandigarh",
+    "location": "Sector 8",
+    "address": "Shop 37, Block 8, Inner Market, Sector 8, Chandigarh.",
+    "cuisines": "Cafe, Coffee, Beverages",
+    "aggregate_rating": 3.8,
+    "votes": 27,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/20992406/d6813b8abc9af335eea9b2ac0e536ef0_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chandigarh/victorias-boutique-café-sector-8/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Cafe Cake Delights",
+    "city": "Chandigarh",
+    "location": "Sector 35",
+    "address": "SCO 487/488, Sector 35, Chandigarh",
+    "cuisines": "Bakery, North Indian, Continental",
+    "aggregate_rating": 4.3,
+    "votes": 2648,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/21271874/6b127a4c36679c95ccf952f57473dd4d_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chandigarh/cafe-cake-delights-sector-35/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Bon Gateau",
+    "city": "Chandigarh",
+    "location": "Sector 10",
+    "address": "SCO-6, Sector 10-D, Sector 10, Chandigarh",
+    "cuisines": "Bakery, Desserts",
+    "aggregate_rating": 3.9,
+    "votes": 55,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/22717734/c1e2bfa0557d88fce05f69398e048ee2_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chandigarh/bon-gateau-sector-10/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Parampara Restaurant & Bar",
+    "city": "Chandigarh",
+    "location": "Sector 35",
+    "address": "SCO 429/430, Sector 35C, Near Sector 35, Chandigarh",
+    "cuisines": "North Indian, Mughlai, Biryani",
+    "aggregate_rating": 4.3,
+    "votes": 500,
+    "image_url": "https://b.zmtcdn.com/data/pictures/2/21862902/7a780eb8ea199a6d70b446bcb43bf2fe_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chandigarh/parampara-restaurant-bar-sector-35/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Sa Roca",
+    "city": "Chandigarh",
+    "location": "Sector 10",
+    "address": "Sector 10D, Chandigarh, Sector 10, Chandigarh",
+    "cuisines": "Cafe, Sandwich, Bakery",
+    "aggregate_rating": 4.4,
+    "votes": 391,
+    "image_url": "https://b.zmtcdn.com/data/pictures/7/21714027/96baf9d3d57bdf29e1ff126451d9db99_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/chandigarh/sa-roca-sector-10/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "The Sip Society",
+    "city": "Chandigarh",
+    "location": "Sector 10",
+    "address": "SCO 21, First floor, Sector 10, Chandigarh",
+    "cuisines": "Tea, Coffee, Bakery",
+    "aggregate_rating": 4.4,
+    "votes": 163,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/chandigarh/the-sip-society-sector-10/info",
+    "average_cost_for_two": 0
+  }
+]

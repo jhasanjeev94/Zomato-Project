@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Masala Republic By Dadu's",
+    "city": "Hyderabad",
+    "location": "Basheer Bagh",
+    "address": "3-6-14/3-5, Himayat Nagar Road, Chandra Nagar Basheer Bagh Hyderabad, Basheer Bagh, Hyderabad",
+    "cuisines": "Asian, Continental, North Indian",
+    "aggregate_rating": 4.4,
+    "votes": 2969,
+    "image_url": "https://b.zmtcdn.com/data/pictures/5/19137785/07cc555e09a96f9e4db509978e124cd6_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/hyderabad/masala-republic-by-dadus-basheer-bagh/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Mirame Cafe & Kitchen",
+    "city": "Hyderabad",
+    "location": "X Roads",
+    "address": "Chikkadpalli Road, Above Union Bank, Chikkadpally, Vivek Nagar, Himayatnagar, Hyderabad",
+    "cuisines": "Chinese, North Indian, Cafe",
+    "aggregate_rating": 4.3,
+    "votes": 1342,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/20567554/68ebff342b71012b0174a043b3f5d114_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/hyderabad/mirame-cafe-kitchen-rtc-x-roads/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Amyra Cafe & Kitchen",
+    "city": "Hyderabad",
+    "location": "Banjara Hills",
+    "address": "2nd Floor, Shiva Shakti Towers, Road 12, Amudi Nagar, Bhola Nagar, Banjara Hills, Hyderabad",
+    "cuisines": "North Indian, Italian, Pizza",
+    "aggregate_rating": 4.1,
+    "votes": 173,
+    "image_url": "https://b.zmtcdn.com/data/pictures/9/22309429/aef4bc39e8c88a695392e701d54aaca3_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/hyderabad/amyra-cafe-kitchen-banjara-hills/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Accha Telugu Kitchen & Bar",
+    "city": "Hyderabad",
+    "location": "Bar Somajiguda",
+    "address": "Hussain Sagar, Opposite Lake Police Station, PV Narasimha Rao Marg, Somajiguda, Hyderabad",
+    "cuisines": "South Indian, Fast Food",
+    "aggregate_rating": 4.3,
+    "votes": 1080,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/hyderabad/accha-telugu-kitchen-bar-somajiguda/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Imli Sarai",
+    "city": "Hyderabad",
+    "location": "Banjara Hills",
+    "address": "8-2-590, Road 10, opposite Bulchand Trading Pvt Ltd, Opposite Taj Krishna, Banjara Hills, Hyderabad",
+    "cuisines": "Cafe, Coffee, Italian",
+    "aggregate_rating": 4.2,
+    "votes": 772,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/20630344/bceb0b42a1e4a35f99e7c8d6a567bed1_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/hyderabad/imli-sarai-banjara-hills/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Qaffeine Bistro",
+    "city": "Hyderabad",
+    "location": "Banjara Hills",
+    "address": "8-2-208/19, Road 10, Banjara Hills, Hyderabad",
+    "cuisines": "Continental, Cafe, Pizza",
+    "aggregate_rating": 4.3,
+    "votes": 162,
+    "image_url": "https://b.zmtcdn.com/data/pictures/5/22629775/9c04b3af1a23831fc5c1e5b313da34ab_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/hyderabad/qaffeine-bistro-1-banjara-hills/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Paneer Palace Pure Veg Multicuisine Fine Dine Restaurant",
+    "city": "Hyderabad",
+    "location": "Banjara Hills",
+    "address": "5th Floor, Fortune Enclave, Road 12, Banjara Hills, Hyderabad",
+    "cuisines": "North Indian, Chinese, South Indian",
+    "aggregate_rating": 4.1,
+    "votes": 356,
+    "image_url": "https://b.zmtcdn.com/data/pictures/2/22518082/6339eebb07c6d90ee1d946cc0400d59f_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/hyderabad/paneer-palace-pure-veg-multicuisine-fine-dine-restaurant-banjara-hills/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Krishnapatnam",
+    "city": "Hyderabad",
+    "location": "Kothapet",
+    "address": "11-9-7/4, SR Apartment, Prabhat Nagar, Laxmi Nagar Colony, Kothapet, Hyderabad",
+    "cuisines": "Andhra, Chinese, North Indian",
+    "aggregate_rating": 4.2,
+    "votes": 3375,
+    "image_url": "https://b.zmtcdn.com/data/pictures/9/21881299/cc7f6cc8f3b734cfb14176e6c8c15ec0_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/hyderabad/krishnapatnam-kothapet/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Hard Rock Cafe",
+    "city": "Hyderabad",
+    "location": "Banjara Hills",
+    "address": "Ground Floor, GVK One Mall, Road 1, Banjara Hills, Hyderabad",
+    "cuisines": "American, Continental, Italian",
+    "aggregate_rating": 4.3,
+    "votes": 7031,
+    "image_url": "https://b.zmtcdn.com/data/pictures/chains/0/91500/624438edd376ac880166c081ac642402_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/hyderabad/hard-rock-cafe-banjara-hills/info",
+    "average_cost_for_two": 0
+  }
+]

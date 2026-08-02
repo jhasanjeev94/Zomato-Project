@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Aangan Restaurant",
+    "city": "Goa",
+    "location": "1 Panaji",
+    "address": "Mala Centre, Tiswadi, Near Panjim Community Health, Panaji, Goa",
+    "cuisines": "Goan, North Indian, Chinese",
+    "aggregate_rating": 4.3,
+    "votes": 741,
+    "image_url": "https://b.zmtcdn.com/data/pictures/2/20788632/79b4dd225bd143fa3917ec1cb7d12233_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/goa/aangan-restaurant-1-panaji/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "The Heritage Bistro",
+    "city": "Goa",
+    "location": "Bistro Panaji",
+    "address": "Surya Kiran Heritage Hotel, Near Campal Bridge, Panaji, Goa",
+    "cuisines": "Chinese, Fast Food, Salad",
+    "aggregate_rating": 3.8,
+    "votes": 884,
+    "image_url": "https://b.zmtcdn.com/data/pictures/1/18834061/52e16abe4455233460880e5bf1c6fb5b_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/goa/the-heritage-bistro-panaji/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "L'oro- Aperitivo Bar & Kitchen",
+    "city": "Goa",
+    "location": "Kitchen Panaji",
+    "address": "Pinto Arcade, Opposite Panjim Gymkhana, Campal, Panaji, Goa",
+    "cuisines": "Italian, Mediterranean, Spanish",
+    "aggregate_rating": 4.0,
+    "votes": 10,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/goa/loro-aperitivo-bar-kitchen-panaji/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Voltaire Hotel",
+    "city": "Goa",
+    "location": "Hotel Nerul",
+    "address": "H. No. T-24, Yuant, Verem, Reis Magos, Nerul, Goa",
+    "cuisines": "Goan, Seafood",
+    "aggregate_rating": 4.0,
+    "votes": 23,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/21159016/2440eb9865fd1dccc7350dec44f3189e_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/goa/voltaire-hotel-nerul/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Mamagoto",
+    "city": "Goa",
+    "location": "Panaji",
+    "address": "10/66/1 & 10 /66/2, Tiswadi, Panaji, Goa",
+    "cuisines": "Thai, Sushi, Japanese",
+    "aggregate_rating": 4.4,
+    "votes": 2480,
+    "image_url": "https://b.zmtcdn.com/data/pictures/chains/6/20131956/2fdf9d2a331e53f56c43b92bc875712c_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/goa/mamagoto-panaji/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "The Black Sheep Bistro",
+    "city": "Goa",
+    "location": "Info",
+    "address": "House 13/390, 1st Floor, Villa Braganza, Near Indoor Stadium Campal, Panaji, Goa",
+    "cuisines": "Continental, European, Thai",
+    "aggregate_rating": 4.5,
+    "votes": 3025,
+    "image_url": "https://b.zmtcdn.com/data/pictures/8/130888/3d1b4bcb9fb5438a16d9eab37ac7c97d_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/blacksheepbistro/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Haochi - Asian Bistro",
+    "city": "Goa",
+    "location": "Bistro Panaji",
+    "address": "14/249/ D7 & 14/249/ D8 Sapana Sea Mist Caranzalem Tiswadi, Panaji, Goa",
+    "cuisines": "Chinese, Desserts, Beverages",
+    "aggregate_rating": 4.1,
+    "votes": 133,
+    "image_url": "https://b.zmtcdn.com/data/pictures/5/21012905/ab471334cf855a741ba36bbb4ac76517_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/goa/haochi-asian-bistro-panaji/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "A Chimbel House",
+    "city": "Goa",
+    "location": "House Panaji",
+    "address": "H.no. M/118 ward no. 9 Chimbel, Tiswadi, North Goa Goa-403006, Panaji, Goa",
+    "cuisines": "Goan, Continental, Asian",
+    "aggregate_rating": 4.5,
+    "votes": 56,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/goa/a-chimbel-house-panaji/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "RAIA - Ristorante & Bar",
+    "city": "Goa",
+    "location": "Bar Panaji",
+    "address": "Ground Floor, Hotel Varanda Do Mar Miramar, Dr Jack De Sequeira Road, Panaji, Goa",
+    "cuisines": "Italian, Chinese, North Indian",
+    "aggregate_rating": 4.5,
+    "votes": 206,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/21894636/39fdec3bd2b19f30dc080a59fa3943dc_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/goa/raia-ristorante-bar-panaji/info",
+    "average_cost_for_two": 0
+  }
+]

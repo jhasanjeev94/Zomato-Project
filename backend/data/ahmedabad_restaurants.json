@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Peppers By Pepparazzi",
+    "city": "Ahmedabad",
+    "location": "G Road",
+    "address": "101/102, 1st Floor, Majestic Plaza, C G Road, Ahmedabad",
+    "cuisines": "North Indian, Continental, Japanese",
+    "aggregate_rating": 4.2,
+    "votes": 1860,
+    "image_url": "https://b.zmtcdn.com/data/pictures/3/21046093/c169548ecd516edd540e0da1a42d735c_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ahmedabad/peppers-by-pepparazzi-c-g-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Nook By Grace Coffee Co.",
+    "city": "Ahmedabad",
+    "location": "Co Navrangpura",
+    "address": "B/6/1, Nilamber Complex, St. Xavier's College Corner, Navrangpura, Ahmedabad",
+    "cuisines": "Coffee, Continental, Italian",
+    "aggregate_rating": 4.4,
+    "votes": 1901,
+    "image_url": "https://b.zmtcdn.com/data/pictures/7/21169937/b67697f3e72cf2f937dfd731e69578fb_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ahmedabad/nook-by-grace-coffee-co-navrangpura/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Crush Coffee",
+    "city": "Ahmedabad",
+    "location": "G Road",
+    "address": "2, Centaur House, 40 Umashankar Joshi Marg, C G Road, Ahmedabad",
+    "cuisines": "Coffee, Healthy Food, Pizza",
+    "aggregate_rating": 4.1,
+    "votes": 400,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/22320374/4c420a11c4aeb6035f012407dfc5fbdd_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ahmedabad/crush-coffee-c-g-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Cafe 1st Story - Fairfield By Marriott",
+    "city": "Ahmedabad",
+    "location": "Ashram Road",
+    "address": "174-175, Laxmi Niwas Bunglows, Satyawadi Society, Ashram Road, Ahmedabad",
+    "cuisines": "Biryani, Chinese, Desserts",
+    "aggregate_rating": 4.0,
+    "votes": 2284,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/111906/ee34258c992b753d6e1a9e6458161df3_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ahmedabad/cafe-1st-story-fairfield-by-marriott-ashram-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "EL'Olivo",
+    "city": "Ahmedabad",
+    "location": "Navrangpura",
+    "address": "Gf/4, Dynamic House, Sarvottam Nagar Society, Memnagar Station, Navrangpura, Ahmedabad",
+    "cuisines": "Pizza, Coffee, Tea",
+    "aggregate_rating": 4.1,
+    "votes": 908,
+    "image_url": "https://b.zmtcdn.com/data/pictures/0/20889270/b78129dd1d686afa104c0626c64e9b0b_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ahmedabad/elolivo-navrangpura/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Mrs Mage - Hyatt Ahmedabad",
+    "city": "Ahmedabad",
+    "location": "Ahmedabad Vastrapur",
+    "address": "Plot 216, Town Plan Scheme 1, Near Vastrapur Lake, Hyatt, Vastrapur, Ahmedabad",
+    "cuisines": "Cafe, North Indian, Continental",
+    "aggregate_rating": 4.2,
+    "votes": 911,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/19150774/c4686b1a590ebceb947ea7046222e9c7_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ahmedabad/mrs-mage-hyatt-ahmedabad-vastrapur/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Four Coffee",
+    "city": "Ahmedabad",
+    "location": "G Road",
+    "address": "Chintan Bunglow, Near GLS Commerce College Ground, C G Road, Ahmedabad",
+    "cuisines": "Beverages, Cafe, Italian",
+    "aggregate_rating": 4.3,
+    "votes": 66,
+    "image_url": "https://b.zmtcdn.com/data/pictures/3/22550513/3c50a2d1aae5af392e894df3db86c432_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ahmedabad/four-coffee-c-g-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Mocha",
+    "city": "Ahmedabad",
+    "location": "Gulbai Tekra",
+    "address": "10, Vasant Baug Society, CA Circle, Near IDBI Bank, Gulbai Tekra, Ahmedabad",
+    "cuisines": "Italian, Pizza, Momos",
+    "aggregate_rating": 4.1,
+    "votes": 6798,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/18545544/31153a0d324421f33f9547e2d9b3983c_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ahmedabad/mocha-1-gulbai-tekra/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Leafy Lion",
+    "city": "Ahmedabad",
+    "location": "Lion Navrangpura",
+    "address": "Shop 5, Ground Floor, Krupa Aspire, HL Collage Road, Navrangpura, Ahmedabad",
+    "cuisines": "Cafe, Coffee, Italian",
+    "aggregate_rating": 4.1,
+    "votes": 356,
+    "image_url": "https://b.zmtcdn.com/data/pictures/1/21438241/0e37d4af5d68cf90f54cb8d8997c9bd9_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/ahmedabad/leafy-lion-navrangpura/info",
+    "average_cost_for_two": 0
+  }
+]

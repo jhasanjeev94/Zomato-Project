@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Barrels - The Craft House",
+    "city": "Pune",
+    "location": "House Sangamvadi",
+    "address": "Unit 4 & 5, RajaBahadur Mills, Bundgarden Road, Sangamvadi, Pune",
+    "cuisines": "Bar Food, Italian, Continental",
+    "aggregate_rating": 4.5,
+    "votes": 566,
+    "image_url": "https://b.zmtcdn.com/data/pictures/5/22311815/9332c08b8761151ce3523be86a5e30ae_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/pune/barrels-the-craft-house-sangamvadi/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Millers - The Luxury Club",
+    "city": "Pune",
+    "location": "Bund Garden",
+    "address": "Raja Bahadur International Mills, Near Sheraton Grand, Bund Garden Road, Pune",
+    "cuisines": "Continental, North Indian, Fast Food",
+    "aggregate_rating": 4.0,
+    "votes": 1996,
+    "image_url": "https://b.zmtcdn.com/data/pictures/9/18998859/b421388a54372eb0faa58fc57e185fa0_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/pune/millers-the-luxury-club-bund-garden/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Cafe Kathaa",
+    "city": "Pune",
+    "location": "Fc Road",
+    "address": "British Library Old Building, Ganeshwadi, FC Road, Pune",
+    "cuisines": "Cafe, Continental, Desserts",
+    "aggregate_rating": 4.3,
+    "votes": 2970,
+    "image_url": "https://b.zmtcdn.com/data/pictures/8/18753258/404bd33071fbdd928fd0fa501bd43a46_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/pune/cafe-kathaa-fc-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Green Signal",
+    "city": "Pune",
+    "location": "Deccan Gymkhana",
+    "address": "1242/A1, 604/1A, Bhambhurda, Shivajinagar, Apate Road, Deccan Gymkhana, Pune",
+    "cuisines": "Chinese, North Indian, Continental",
+    "aggregate_rating": 4.2,
+    "votes": 7638,
+    "image_url": "https://b.zmtcdn.com/data/pictures/8/18714748/9c7b7feabebb2878f2ffb6c8e353cf6b_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/pune/green-signal-deccan-gymkhana/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Kukoo",
+    "city": "Pune",
+    "location": "Sangamvadi",
+    "address": "Unit 5, Raja Bahadur Mills, Station, behind Sheraton Grand Pune Bund Garden Hotel, Sangamvadi, Pune, Maharashtra 411001, Sangamvadi, Pune",
+    "cuisines": "Continental, Asian, Italian",
+    "aggregate_rating": 4.4,
+    "votes": 534,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/pune/kukoo-sangamvadi/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Feast - Sheraton Grand",
+    "city": "Pune",
+    "location": "Bund Garden",
+    "address": "100/101, Sheraton Grand, Raja Bahadur Mill Road, Bund Garden Road, Pune",
+    "cuisines": "Chinese, North Indian, Mughlai",
+    "aggregate_rating": 4.3,
+    "votes": 1970,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/6505646/57ab78ef95f74452fbf068b80095a4ca_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/pune/feast-sheraton-grand-bund-garden/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "La Casetta",
+    "city": "Pune",
+    "location": "Deccan Gymkhana",
+    "address": "60, Prabhat Road, Opposite Indian Bank, Deccan Gymkhana, Pune",
+    "cuisines": "Pizza, Italian, Pasta",
+    "aggregate_rating": 4.5,
+    "votes": 303,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/pune/la-casetta-deccan-gymkhana/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Cibbo All Day Dining & Bar",
+    "city": "Pune",
+    "location": "Shivaji Nagar",
+    "address": "6A, 1195/C, Sud Nagar, Near Tukaram Paduka Mandir, Fergusson College Road, Shivaji Nagar, Pune",
+    "cuisines": "Pizza, Asian, Continental",
+    "aggregate_rating": 4.3,
+    "votes": 1227,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/21526206/db0a7ab2719716a0dbaf4d4a1099ba42_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/pune/cibbo-all-day-dining-bar-shivaji-nagar/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "2BHK Diner & Key Club",
+    "city": "Pune",
+    "location": "Bund Garden",
+    "address": "Unit 7, Raja Bahadur International Mills Limited, Pune Station, Near Sheraton Grand, Bund Garden Road, Pune",
+    "cuisines": "North Indian, Mediterranean, European",
+    "aggregate_rating": 4.0,
+    "votes": 4296,
+    "image_url": "https://b.zmtcdn.com/data/pictures/0/18884150/85a7c44f610416452fff747c248255d1_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/pune/2bhk-diner-key-club-bund-garden/info",
+    "average_cost_for_two": 0
+  }
+]

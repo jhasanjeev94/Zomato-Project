@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Zaranj",
+    "city": "Kolkata",
+    "location": "Market Area",
+    "address": "26, Jawaharlal Nehru Road, New Market Area, Kolkata",
+    "cuisines": "North Indian, Biryani, Kebab",
+    "aggregate_rating": 4.2,
+    "votes": 2775,
+    "image_url": "https://b.zmtcdn.com/data/pictures/0/20600/e2650f749b335b81587b634304515145_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/kolkata/zaranj-new-market-area/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "The Bridge Bistro Bar Polo Floatel",
+    "city": "Kolkata",
+    "location": "Bbd Bagh",
+    "address": "9/10, Calcutta Jetty, Strand Road, Ward-45, Dalhousie BBD Bagh, Kolkata",
+    "cuisines": "North Indian, Asian, Oriental",
+    "aggregate_rating": 4.0,
+    "votes": 2043,
+    "image_url": "https://b.zmtcdn.com/data/pictures/1/20841/86179b7c26c62a591d0dad4175ef1f72_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/kolkata/the-bridge-bistro-bar-polo-floatel-dalhousie-bbd-bagh/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Sky deck at Polo Floatel Kolkata",
+    "city": "Kolkata",
+    "location": "Bbd Bagh",
+    "address": "9/10, Strand Road, Jetty Road, Esplanade, Kolkata",
+    "cuisines": "Bar Food, Asian, Pizza",
+    "aggregate_rating": 4.2,
+    "votes": 180,
+    "image_url": "https://b.zmtcdn.com/data/pictures/0/20931680/58dd842a9b39b8605412092452156514_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/kolkata/sky-deck-at-polo-floatel-kolkata-1-dalhousie-bbd-bagh/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Blue And Beyond",
+    "city": "Kolkata",
+    "location": "Market Area",
+    "address": "8A And 8B, Nellie Sengupta Sarani, Ward 63, Lindsay Street, New Market Area, Kolkata",
+    "cuisines": "North Indian, Chinese, Sichuan",
+    "aggregate_rating": 4.0,
+    "votes": 2956,
+    "image_url": "https://b.zmtcdn.com/data/pictures/chains/6/21636/0ccb0ea16c2393fe635d45c39f77f9ff_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/kolkata/blue-and-beyond-new-market-area/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Kulture - Speciality Coffee",
+    "city": "Kolkata",
+    "location": "Street Area",
+    "address": "Gate 1, 3rd Floor, Chowringhee Mansion, Park Street Area, Kolkata",
+    "cuisines": "Continental, Italian, Pizza",
+    "aggregate_rating": 4.7,
+    "votes": 192,
+    "image_url": "https://b.zmtcdn.com/data/pictures/2/21860152/03666393d057e922c374bef16563cb2e_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/kolkata/kulture-speciality-coffee-park-street-area/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Fabbrica Originale",
+    "city": "Kolkata",
+    "location": "Street Area",
+    "address": "Ground Floor, 18A, Park St, Park Street Area, Kolkata",
+    "cuisines": "Italian, Pizza, Pasta",
+    "aggregate_rating": 4.4,
+    "votes": 5675,
+    "image_url": "https://b.zmtcdn.com/data/pictures/8/18420478/bcc21fd9aa6d25ada0c5244e17a82f0a_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/kolkata/fabbrica-originale-1-park-street-area/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Cafe Florista",
+    "city": "Kolkata",
+    "location": "Street Area",
+    "address": "4, Royd Street Area, Opposite Royd Nursing Home, Park Street Area, Kolkata",
+    "cuisines": "Fast Food, Sandwich, Burger",
+    "aggregate_rating": 3.6,
+    "votes": 1151,
+    "image_url": "https://b.zmtcdn.com/data/pictures/8/21488118/3f366567c585a97f79c9975568c4e616_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/kolkata/cafe-florista-1-park-street-area/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Lmnoq",
+    "city": "Kolkata",
+    "location": "Street Area",
+    "address": "24, Park Street Area, Kolkata",
+    "cuisines": "Continental, Italian, North Indian",
+    "aggregate_rating": 3.8,
+    "votes": 1387,
+    "image_url": "https://b.zmtcdn.com/images/res_avatar_476_320_1x_new.png",
+    "zomato_url": "https://www.zomato.com/kolkata/lmnoq-park-street-area/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Aqua Java",
+    "city": "Kolkata",
+    "location": "Road Howrah",
+    "address": "Holding 42, Ward 13, Maulana Abul Kalam Azad Road, Near Dobson Road, Howrah",
+    "cuisines": "Desserts, North Indian, Pizza",
+    "aggregate_rating": 4.1,
+    "votes": 93,
+    "image_url": "https://b.zmtcdn.com/data/pictures/7/22654137/d08b0e10abae9718d703b2604e4a4318_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/kolkata/aqua-java-2-dobson-road-howrah/info",
+    "average_cost_for_two": 0
+  }
+]

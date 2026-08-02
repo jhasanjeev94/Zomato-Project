@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Handi Restaurant",
+    "city": "Jaipur",
+    "location": "Mi Road",
+    "address": "Opposite GPO, Maya Mansion, MI Road, Jaipur",
+    "cuisines": "North Indian, BBQ, Mughlai",
+    "aggregate_rating": 4.0,
+    "votes": 8021,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/100124/1658992e9675203850b148d1c04b2da7_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/jaipur/handi-restaurant-mi-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "The Night Jar",
+    "city": "Jaipur",
+    "location": "Mi Road",
+    "address": "3rd Floor, Jayanti Market, New Colony, Panch Batti, Leisure Inn Grand Chanakya, MI Road, Jaipur",
+    "cuisines": "Bar Food",
+    "aggregate_rating": 4.2,
+    "votes": 7578,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/18748726/94aa8a55e92dd3cc815ce5de5c9127b6_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/jaipur/the-night-jar-mi-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Khoje",
+    "city": "Jaipur",
+    "location": "C Scheme",
+    "address": "Ground floor, Durga marg, Patrakar Colony, C Scheme, Ashok Nagar, Jaipur, Rajasthan 302001, Rajasthan, C Scheme, Jaipur",
+    "cuisines": "North Indian, Continental, Mediterranean",
+    "aggregate_rating": 4.5,
+    "votes": 95,
+    "image_url": "https://b.zmtcdn.com/data/pictures/9/22683379/e7b0fdf6-f8a4-4f8a-8212-c74dedebba5c_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/jaipur/khoje-c-scheme/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Retreat",
+    "city": "Jaipur",
+    "location": "C Scheme",
+    "address": "8th Floor, Fortune Heights, Subhash Marg, C Scheme, Jaipur",
+    "cuisines": "North Indian, Chinese, Continental",
+    "aggregate_rating": 4.1,
+    "votes": 4319,
+    "image_url": "https://b.zmtcdn.com/data/pictures/8/18922348/df0ada4a97481750302e3467476a5636_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/jaipur/retreat-c-scheme/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Chawla's M.I Road (Since 1960)",
+    "city": "Jaipur",
+    "location": "Mi Road",
+    "address": "Gangwal Bhawan, Laxmi Marg, MI Road, Jaipur",
+    "cuisines": "North Indian, Mughlai, Grilled Chicken",
+    "aggregate_rating": 4.4,
+    "votes": 1168,
+    "image_url": "https://b.zmtcdn.com/data/pictures/3/20977443/5eb6d74ba807f060c7b79517562f3658_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/jaipur/chawlas-m-i-road-since-1960-mi-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "KnightHouse",
+    "city": "Jaipur",
+    "location": "C Scheme",
+    "address": "Bhagwan Das Rd, Panch Batti C Scheme, Jaipur",
+    "cuisines": "North Indian, Italian, Continental",
+    "aggregate_rating": 4.5,
+    "votes": 4252,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/21158794/843af7bef673b301fb7f71f23b7685b2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/jaipur/knighthouse-c-scheme/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Cafe Kebabs",
+    "city": "Jaipur",
+    "location": "Mi Road",
+    "address": "Ground Floor, Bombay House, Arvind Marg, MI Road, Jaipur",
+    "cuisines": "North Indian, Chinese, Rolls",
+    "aggregate_rating": 4.0,
+    "votes": 266,
+    "image_url": "https://b.zmtcdn.com/data/pictures/4/22434944/6d36a82776f5aa362ccaeff527b8d17c_o2_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/jaipur/cafe-kebabs-1-mi-road/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Amano Kitchen & More",
+    "city": "Jaipur",
+    "location": "Sindhi Camp",
+    "address": "4th Floor, Zo Selections, 194, Mirza Ismail Road, Opposite Akasvani, Sindhi Camp, Jaipur",
+    "cuisines": "North Indian, Pizza, Continental",
+    "aggregate_rating": 4.3,
+    "votes": 310,
+    "image_url": "https://b.zmtcdn.com/data/pictures/3/22625563/d7e83360efcba73764a7a9b29d8b244d_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/jaipur/amano-kitchen-more-sindhi-camp/info",
+    "average_cost_for_two": 0
+  },
+  {
+    "name": "Chao Chinese Bistro - Holiday Inn Jaipur City Centre",
+    "city": "Jaipur",
+    "location": "Bais Godam",
+    "address": "Commercial Plot 1, Sardar Patel Road, Bais Godam, Jaipur",
+    "cuisines": "Chinese, Asian, Thai",
+    "aggregate_rating": 4.3,
+    "votes": 2355,
+    "image_url": "https://b.zmtcdn.com/data/pictures/6/102216/1be99334464555542377052b639c2228_featured_v2.jpg",
+    "zomato_url": "https://www.zomato.com/jaipur/chao-chinese-bistro-holiday-inn-jaipur-city-centre-bais-godam/info",
+    "average_cost_for_two": 0
+  }
+]
