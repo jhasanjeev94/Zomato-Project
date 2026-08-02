@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AI-powered restaurant recommendation system. Get personalized dining suggestions powered by Groq LLM and Zomato data.">
+    <meta name="description" content="AI-powered restaurant recommendation system. Get personalized dining suggestions powered by Groq LLM and live Zomato data.">
     <meta name="theme-color" content="#E23744">
     <title>Zomato AI — Restaurant Recommender</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +29,7 @@
                     </ul>
                 </div>
                 <div class="nav-right">
+                    <span class="data-source-badge" id="data-source-badge">🔴 Live from Zomato</span>
                     <button class="nav-icon-btn" id="btn-notifications" title="Notifications" aria-label="Notifications">🔔</button>
                     <button class="nav-icon-btn" id="btn-settings" title="Settings" aria-label="Settings">⚙️</button>
                     <button class="btn-signin" id="btn-signin">Sign In</button>
@@ -41,17 +42,25 @@
                 <!-- ── Hero ── -->
                 <section class="hero-section" id="hero-section">
                     <h1 class="hero-title">Zomato AI Recommender</h1>
-                    <p class="hero-subtitle">Your personal culinary concierge, powered by AI.</p>
+                    <p class="hero-subtitle">Your personal culinary concierge — powered by live Zomato data & AI.</p>
                 </section>
 
                 <!-- ── Preference Form ── -->
                 <section class="form-card" id="preference-form-card">
                     <form id="preference-form" class="form-grid" autocomplete="off">
-                        <!-- Location -->
+                        <!-- City -->
                         <div class="form-field">
-                            <label for="location-select">Location</label>
-                            <select id="location-select" required>
+                            <label for="city-select">City</label>
+                            <select id="city-select" required>
                                 <option value="">Select City</option>
+                            </select>
+                        </div>
+
+                        <!-- Location (cascaded from city) -->
+                        <div class="form-field">
+                            <label for="location-select">Location <span class="label-hint">(optional)</span></label>
+                            <select id="location-select">
+                                <option value="">All Locations</option>
                             </select>
                         </div>
 
@@ -66,11 +75,11 @@
                             </select>
                         </div>
 
-                        <!-- Cuisine -->
+                        <!-- Cuisine (cascaded from city) -->
                         <div class="form-field">
                             <label for="cuisine-select">Cuisine</label>
                             <select id="cuisine-select">
-                                <option value="">Choose Cuisine</option>
+                                <option value="">All Cuisines</option>
                             </select>
                         </div>
 
@@ -135,7 +144,7 @@
                         <li><a href="#" id="link-cookies">Cookie Policy</a></li>
                         <li><a href="#" id="link-contact">Contact Us</a></li>
                     </ul>
-                    <span class="footer-copyright">&copy; 2024 Ephemeral Epicure. All rights reserved.</span>
+                    <span class="footer-copyright">&copy; 2026 Epicure AI · Data from Zomato. All rights reserved.</span>
                 </div>
             </div>
         </footer>

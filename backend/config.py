@@ -20,8 +20,19 @@ class Settings:
     GROQ_FALLBACK_MODEL: str = os.getenv("GROQ_FALLBACK_MODEL", "llama-3.1-8b-instant")
     MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", "2048"))
 
-    # Dataset Configuration
-    DATASET_NAME: str = "ManikaSaini/zomato-restaurant-recommendation"
+    # Zomato Scraping Configuration
+    ZOMATO_BASE_URL: str = "https://www.zomato.com"
+    SUPPORTED_CITIES: list[str] = [
+        "mumbai", "delhi-ncr", "bangalore", "hyderabad",
+        "ahmedabad", "chennai", "kolkata", "pune",
+        "jaipur", "lucknow", "chandigarh", "goa",
+    ]
+    SCRAPE_CACHE_DIR: str = os.getenv(
+        "SCRAPE_CACHE_DIR",
+        os.path.join(os.path.dirname(__file__), "data")
+    )
+    SCRAPE_CACHE_TTL_HOURS: int = int(os.getenv("SCRAPE_CACHE_TTL_HOURS", "6"))
+    MAX_PAGES_PER_CITY: int = int(os.getenv("MAX_PAGES_PER_CITY", "1"))
 
     # Server Configuration
     HOST: str = os.getenv("HOST", "0.0.0.0")

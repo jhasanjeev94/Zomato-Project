@@ -1,97 +1,127 @@
 """
-Data loading service for the Zomato restaurant dataset.
+Data loading service for the Zomato restaurant recommendation system.
 
-Loads the dataset from a bundled local CSV file, preprocesses it,
-and caches it in memory for fast access.
+Uses a cache-first strategy:
+    1. In-memory cache (fastest)
+    2. File cache (JSON on disk with TTL)
+    3. Live scrape from Zomato (last resort)
 """
 
 import logging
-from pathlib import Path
 from typing import Optional
 
 import pandas as pd
 
+from backend.services.scraper import scrape_city_restaurants
+from backend.services.data_cache import get_cached_data, save_to_cache
 from backend.utils.preprocessing import preprocess_dataframe
+from backend.config import settings
 
 logger = logging.getLogger(__name__)
 
-# Path to the bundled CSV dataset
-_DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "zomato_restaurants.csv"
-
-# In-memory cache for the preprocessed DataFrame
-_cached_df: Optional[pd.DataFrame] = None
+# In-memory cache: city → preprocessed DataFrame
+_cached_dfs: dict[str, pd.DataFrame] = {}
 
 
-def load_restaurant_data(force_reload: bool = False) -> pd.DataFrame:
+def load_restaurant_data(city: str = "mumbai") -> pd.DataFrame:
     """
-    Load and cache the Zomato dataset from the bundled CSV.
+    Load restaurant data with a cache-first strategy.
 
-    On first call, reads the CSV, preprocesses it,
-    and stores it in memory. Subsequent calls return the cached copy.
+    Resolution order:
+        1. In-memory DataFrame cache
+        2. File-based JSON cache (if fresh per TTL)
+        3. Live scrape from zomato.com
 
     Args:
-        force_reload: If True, bypass cache and reload from disk.
+        city: City slug (e.g., 'mumbai', 'delhi-ncr').
 
     Returns:
         Preprocessed DataFrame of restaurant data.
-
-    Raises:
-        RuntimeError: If dataset cannot be loaded.
+        Empty DataFrame if no data could be loaded.
     """
-    global _cached_df
+    city = city.lower().replace(" ", "-")
 
-    if _cached_df is not None and not force_reload:
-        return _cached_df
+    # 1. In-memory cache
+    if city in _cached_dfs:
+        logger.info(f"Returning in-memory cache for '{city}' ({len(_cached_dfs[city])} rows)")
+        return _cached_dfs[city]
 
-    try:
-        logger.info(f"Loading dataset from: {_DATA_FILE}")
-        raw_df = pd.read_csv(_DATA_FILE)
-        logger.info(
-            f"Raw dataset loaded: {len(raw_df)} rows, "
-            f"{len(raw_df.columns)} columns"
-        )
-        logger.info(f"Columns: {list(raw_df.columns)}")
+    # 2. File cache
+    cached = get_cached_data(city)
+    if cached:
+        df = pd.DataFrame(cached)
+        df = preprocess_dataframe(df)
+        _cached_dfs[city] = df
+        logger.info(f"Loaded from file cache: '{city}' ({len(df)} restaurants)")
+        return df
 
-        _cached_df = preprocess_dataframe(raw_df)
+    # 3. Live scrape
+    logger.info(f"No cache for '{city}'. Starting live scrape from Zomato...")
+    raw_data = scrape_city_restaurants(city, max_pages=settings.MAX_PAGES_PER_CITY)
 
-        logger.info(
-            f"Dataset ready: {len(_cached_df)} restaurants, "
-            f"{_cached_df['location'].nunique()} locations, "
-            f"avg rating {_cached_df['aggregate_rating'].mean():.2f}"
-        )
+    if not raw_data:
+        logger.warning(f"Scrape returned no data for '{city}'")
+        return pd.DataFrame()
 
-        return _cached_df
+    # Save to file cache
+    save_to_cache(city, raw_data)
 
-    except Exception as e:
-        logger.error(f"Failed to load dataset: {e}")
-        raise RuntimeError(
-            f"Could not load dataset from '{_DATA_FILE}'. "
-            f"Error: {e}"
-        ) from e
+    # Preprocess and cache in memory
+    df = pd.DataFrame(raw_data)
+    df = preprocess_dataframe(df)
+    _cached_dfs[city] = df
+    logger.info(f"Scraped and cached: '{city}' ({len(df)} restaurants)")
+    return df
 
 
-def get_unique_locations() -> list[str]:
+def get_unique_cities() -> list[str]:
     """
-    Return a sorted list of all unique restaurant locations.
+    Return list of supported cities in display format.
 
     Returns:
-        List of location strings (title-cased).
+        List of city names in title case.
     """
-    df = load_restaurant_data()
-    return sorted(df["location"].unique().tolist())
+    return [c.replace("-", " ").title() for c in settings.SUPPORTED_CITIES]
 
 
-def get_unique_cuisines() -> list[str]:
+def get_unique_locations(city: str = "mumbai") -> list[str]:
     """
-    Return a sorted list of all unique individual cuisines.
+    Return sorted list of all unique locations/localities for a city.
+
+    Args:
+        city: City slug.
+
+    Returns:
+        Sorted list of location strings.
+    """
+    df = load_restaurant_data(city)
+    if df.empty:
+        return []
+    return sorted(
+        df["location"]
+        .dropna()
+        .loc[lambda s: s != "Unknown"]
+        .unique()
+        .tolist()
+    )
+
+
+def get_unique_cuisines(city: str = "mumbai") -> list[str]:
+    """
+    Return sorted list of all unique individual cuisines for a city.
 
     Multi-cuisine entries (e.g., "north indian, chinese") are
-    split and deduplicated into individual cuisine types.
+    split into individual cuisine types.
+
+    Args:
+        city: City slug.
 
     Returns:
         Sorted list of unique cuisine strings.
     """
-    df = load_restaurant_data()
+    df = load_restaurant_data(city)
+    if df.empty:
+        return []
     all_cuisines = (
         df["cuisines"]
         .str.split(",")
@@ -104,32 +134,41 @@ def get_unique_cuisines() -> list[str]:
     return sorted(all_cuisines.tolist())
 
 
-def get_dataset_stats() -> dict:
+def get_dataset_stats(city: str = "mumbai") -> dict:
     """
-    Return summary statistics about the loaded dataset.
+    Return summary statistics about the loaded dataset for a city.
+
+    Args:
+        city: City slug.
 
     Returns:
-        Dictionary with total restaurants, locations, cuisines,
-        average rating, and budget distribution.
+        Dictionary with restaurant counts, ratings, and source info.
     """
-    df = load_restaurant_data()
+    df = load_restaurant_data(city)
+    if df.empty:
+        return {"total_restaurants": 0, "city": city, "data_source": "zomato.com"}
     return {
+        "city": city,
         "total_restaurants": len(df),
         "total_locations": df["location"].nunique(),
-        "total_cuisines": len(get_unique_cuisines()),
+        "total_cuisines": len(get_unique_cuisines(city)),
         "average_rating": round(df["aggregate_rating"].mean(), 2),
-        "budget_distribution": df["budget_category"].value_counts().to_dict(),
-        "top_locations": (
-            df["location"]
-            .value_counts()
-            .head(10)
-            .to_dict()
-        ),
+        "data_source": "zomato.com",
     }
 
 
-def clear_cache() -> None:
-    """Clear the in-memory dataset cache (useful for testing)."""
-    global _cached_df
-    _cached_df = None
-    logger.info("Dataset cache cleared")
+def clear_memory_cache(city: Optional[str] = None) -> None:
+    """
+    Clear the in-memory dataset cache.
+
+    Args:
+        city: If given, clear only that city. If None, clear all.
+    """
+    global _cached_dfs
+    if city:
+        city = city.lower().replace(" ", "-")
+        _cached_dfs.pop(city, None)
+        logger.info(f"Cleared in-memory cache for '{city}'")
+    else:
+        _cached_dfs.clear()
+        logger.info("Cleared all in-memory caches")

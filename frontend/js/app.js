@@ -1,6 +1,7 @@
 // ============================================================
-// Zomato AI — Frontend Logic (Phase 6)
+// Zomato AI — Frontend Logic
 // Handles form interaction, API calls, and dynamic rendering
+// Data source: Live Zomato scraping
 // ============================================================
 
 const API_BASE = window.location.hostname === 'localhost'
@@ -11,6 +12,7 @@ const API_BASE = window.location.hostname === 'localhost'
 const elements = {
   navbar: document.getElementById('navbar'),
   form: document.getElementById('preference-form'),
+  citySelect: document.getElementById('city-select'),
   locationSelect: document.getElementById('location-select'),
   budgetSelect: document.getElementById('budget-select'),
   cuisineSelect: document.getElementById('cuisine-select'),
@@ -39,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbarScroll();
   initRatingSlider();
   initForm();
-  loadDropdowns();
+  loadCities();
+  initCityCascade();
 });
 
 // ── Navbar scroll effect ──
@@ -81,28 +84,69 @@ function initForm() {
   });
 }
 
+// ── City cascade: when city changes, reload location & cuisine dropdowns ──
+function initCityCascade() {
+  elements.citySelect.addEventListener('change', async () => {
+    const city = elements.citySelect.value;
+    if (!city) {
+      resetSelect(elements.locationSelect, 'All Locations');
+      resetSelect(elements.cuisineSelect, 'All Cuisines');
+      return;
+    }
+    await loadCityDropdowns(city);
+  });
+}
+
 // ============================================================
-// API: Load Dropdowns
+// API: Load Cities
 // ============================================================
 
-async function loadDropdowns() {
+async function loadCities() {
+  try {
+    const res = await fetch(`${API_BASE}/api/cities`);
+    if (res.ok) {
+      const { cities } = await res.json();
+      populateSelect(elements.citySelect, cities, 'Select City');
+    }
+  } catch (err) {
+    console.warn('Could not load cities — API may be offline:', err.message);
+  }
+}
+
+// ============================================================
+// API: Load Location & Cuisine Dropdowns for a City
+// ============================================================
+
+async function loadCityDropdowns(city) {
+  // Show loading state on dropdowns
+  resetSelect(elements.locationSelect, 'Loading locations…');
+  resetSelect(elements.cuisineSelect, 'Loading cuisines…');
+
+  const citySlug = city.toLowerCase().replace(/ /g, '-');
+
   try {
     const [locRes, cuisRes] = await Promise.all([
-      fetch(`${API_BASE}/api/locations`),
-      fetch(`${API_BASE}/api/cuisines`),
+      fetch(`${API_BASE}/api/locations/${citySlug}`),
+      fetch(`${API_BASE}/api/cuisines/${citySlug}`),
     ]);
 
     if (locRes.ok) {
       const { locations } = await locRes.json();
-      populateSelect(elements.locationSelect, locations, 'Select City');
+      populateSelect(elements.locationSelect, locations, 'All Locations');
+    } else {
+      resetSelect(elements.locationSelect, 'All Locations');
     }
 
     if (cuisRes.ok) {
       const { cuisines } = await cuisRes.json();
-      populateSelect(elements.cuisineSelect, cuisines, 'Choose Cuisine');
+      populateSelect(elements.cuisineSelect, cuisines, 'All Cuisines');
+    } else {
+      resetSelect(elements.cuisineSelect, 'All Cuisines');
     }
   } catch (err) {
-    console.warn('Could not load dropdowns — API may be offline:', err.message);
+    console.warn('Could not load city dropdowns:', err.message);
+    resetSelect(elements.locationSelect, 'All Locations');
+    resetSelect(elements.cuisineSelect, 'All Cuisines');
   }
 }
 
@@ -116,20 +160,25 @@ function populateSelect(selectEl, items, placeholder) {
   });
 }
 
+function resetSelect(selectEl, placeholder) {
+  selectEl.innerHTML = `<option value="">${placeholder}</option>`;
+}
+
 // ============================================================
 // API: Fetch Recommendations
 // ============================================================
 
 async function fetchRecommendations() {
-  const location = elements.locationSelect.value;
+  const city = elements.citySelect.value;
+  const location = elements.locationSelect.value || null;
   const budget = elements.budgetSelect.value;
   const cuisine = elements.cuisineSelect.value || null;
   const minRating = parseFloat(elements.ratingSlider.value);
   const additional = elements.additionalPrefs.value.trim() || null;
 
   // Validation
-  if (!location) {
-    showError('Please select a location to get recommendations.');
+  if (!city) {
+    showError('Please select a city to get recommendations.');
     return;
   }
   if (!budget) {
@@ -137,8 +186,9 @@ async function fetchRecommendations() {
     return;
   }
 
-  // Build request body
+  // Build request body — uses city slug
   const body = {
+    city: city.toLowerCase().replace(/ /g, '-'),
     location,
     budget,
     cuisine,
@@ -217,6 +267,7 @@ function showLoadingSkeleton() {
     <div class="skeleton-grid">
       ${[1, 2, 3].map(() => `
         <div class="skeleton-card">
+          <div class="skeleton-line image"></div>
           <div class="skeleton-line title"></div>
           <div class="skeleton-line medium"></div>
           <div class="skeleton-line short"></div>
@@ -281,7 +332,7 @@ function hideSummary() {
 }
 
 // ============================================================
-// UI: Render Cards
+// UI: Render Cards (with images and Zomato links)
 // ============================================================
 
 function renderCards(recommendations) {
@@ -306,9 +357,18 @@ function renderCards(recommendations) {
 function createCardHTML(rec) {
   const isBookmarked = state.bookmarkedIds.has(rec.restaurant_name);
   const stars = renderStars(rec.rating);
+  const hasImage = rec.image_url && rec.image_url.startsWith('http');
+  const hasZomatoUrl = rec.zomato_url && rec.zomato_url.startsWith('http');
 
   return `
     <article class="restaurant-card" id="card-${slugify(rec.restaurant_name)}">
+      ${hasImage ? `
+        <div class="card-image-wrapper">
+          <img src="${escapeHtml(rec.image_url)}" alt="${escapeHtml(rec.restaurant_name)}"
+               class="card-image" loading="lazy"
+               onerror="this.parentElement.style.display='none'">
+        </div>
+      ` : ''}
       <span class="card-rank">#${rec.rank}</span>
       <div class="card-header">
         <div class="card-title-group">
@@ -329,6 +389,12 @@ function createCardHTML(rec) {
         <div class="card-reason-label">AI Reason</div>
         <p class="card-reason-text">${escapeHtml(rec.explanation)}</p>
       </div>
+      ${hasZomatoUrl ? `
+        <a href="${escapeHtml(rec.zomato_url)}" target="_blank" rel="noopener noreferrer"
+           class="card-zomato-link">
+          View on Zomato ↗
+        </a>
+      ` : ''}
     </article>
   `;
 }

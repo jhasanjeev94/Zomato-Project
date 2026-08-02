@@ -1,8 +1,8 @@
 """
-Data preprocessing utilities for the Zomato dataset.
+Data preprocessing utilities for Zomato restaurant data.
 
-Handles cleaning, normalization, column mapping, and budget bucketing
-of raw restaurant data from HuggingFace.
+Handles cleaning, normalization, and budget bucketing
+of scraped restaurant data from zomato.com.
 """
 
 import pandas as pd
@@ -17,45 +17,23 @@ BUDGET_THRESHOLDS = {
     "high": (1500, float("inf")),
 }
 
-# Map raw HuggingFace column names → standardized internal names
-COLUMN_MAPPING = {
-    "name": "name",
-    "location": "location",
-    "cuisines": "cuisines",
-    "rate": "aggregate_rating",
-    "votes": "votes",
-    "approx_cost(for two people)": "average_cost_for_two",
-    "online_order": "has_online_delivery",
-    "book_table": "has_table_booking",
-    "rest_type": "restaurant_type",
-    "url": "url",
-    "address": "address",
-    "phone": "phone",
-    "dish_liked": "dish_liked",
-    "reviews_list": "reviews_list",
-    "menu_item": "menu_item",
-    "listed_in(type)": "listed_in_type",
-    "listed_in(city)": "listed_in_city",
-}
-
 
 def preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Clean and standardize the raw Zomato dataset.
+    Clean and standardize scraped Zomato restaurant data.
 
     Pipeline:
-        1. Rename columns to standardized names
-        2. Drop rows with missing critical fields (name, location)
-        3. Parse and normalize rating (handle "X/5" format, "NEW", "-")
-        4. Normalize cuisine strings (lowercase, strip)
-        5. Parse cost to numeric (remove currency symbols)
-        6. Bucket cost into low/medium/high categories
-        7. Filter out restaurants with 0 votes
-        8. Normalize location strings (title case)
-        9. Deduplicate by (name, location) keeping highest votes
+        1. Drop rows with missing name
+        2. Normalize cuisine strings (lowercase, strip)
+        3. Parse cost to numeric
+        4. Bucket cost into low/medium/high categories
+        5. Ensure rating is numeric (clamped 0-5)
+        6. Ensure votes is numeric
+        7. Normalize location and city strings
+        8. Deduplicate by (name, city)
 
     Args:
-        df: Raw DataFrame from HuggingFace dataset.
+        df: Raw DataFrame from scraper or JSON cache.
 
     Returns:
         Cleaned and standardized DataFrame.
@@ -63,32 +41,23 @@ def preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     initial_count = len(df)
     logger.info(f"Starting preprocessing with {initial_count} rows")
 
-    # 1. Rename columns to standardized names
-    rename_map = {k: v for k, v in COLUMN_MAPPING.items() if k in df.columns}
-    df = df.rename(columns=rename_map)
-    logger.info(f"Renamed columns: {list(rename_map.keys())} → {list(rename_map.values())}")
-
-    # 2. Drop rows with missing critical fields
-    critical_cols = [c for c in ["name", "location"] if c in df.columns]
-    df = df.dropna(subset=critical_cols)
-    logger.info(f"After dropping nulls: {len(df)} rows (removed {initial_count - len(df)})")
+    # 1. Drop rows with missing name
+    df = df.dropna(subset=["name"])
+    df = df[df["name"].str.strip() != ""]
+    logger.info(f"After dropping empty names: {len(df)} rows")
 
     df = df.copy()
 
-    # 3. Parse and normalize rating
-    if "aggregate_rating" in df.columns:
-        df["aggregate_rating"] = df["aggregate_rating"].apply(_parse_rating)
-    else:
-        df["aggregate_rating"] = 0.0
-        logger.warning("No rating column found. Defaulting to 0.0")
+    # 2. Normalize cuisine strings
+    df["cuisines"] = (
+        df["cuisines"]
+        .fillna("unknown")
+        .astype(str)
+        .str.strip()
+        .str.lower()
+    )
 
-    # Drop rows with invalid/unparseable ratings (NaN after parsing)
-    df = df.dropna(subset=["aggregate_rating"])
-
-    # 4. Normalize cuisine strings
-    df["cuisines"] = df["cuisines"].fillna("unknown").astype(str).str.strip().str.lower()
-
-    # 5. Parse cost to numeric
+    # 3. Parse cost to numeric
     if "average_cost_for_two" in df.columns:
         df["average_cost_for_two"] = pd.to_numeric(
             df["average_cost_for_two"]
@@ -97,49 +66,39 @@ def preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
             errors="coerce",
         ).fillna(0)
     else:
-        # Fallback: check for alternate column names
-        cost_cols = [c for c in df.columns if "cost" in c.lower()]
-        if cost_cols:
-            df["average_cost_for_two"] = pd.to_numeric(
-                df[cost_cols[0]].astype(str).str.replace(r"[^\d.]", "", regex=True),
-                errors="coerce",
-            ).fillna(0)
-            logger.info(f"Used alternate cost column: {cost_cols[0]}")
-        else:
-            df["average_cost_for_two"] = 0
-            logger.warning("No cost column found. Defaulting to 0.")
+        df["average_cost_for_two"] = 0
 
-    # 6. Bucket cost into categories
+    # 4. Bucket cost into categories
     df["budget_category"] = df["average_cost_for_two"].apply(_categorize_budget)
 
-    # 7. Filter out restaurants with 0 votes
+    # 5. Ensure rating is numeric and clamped to 0-5
+    if "aggregate_rating" in df.columns:
+        df["aggregate_rating"] = df["aggregate_rating"].apply(_parse_rating)
+    else:
+        df["aggregate_rating"] = 0.0
+
+    # Drop rows with NaN ratings
+    df = df.dropna(subset=["aggregate_rating"])
+
+    # 6. Ensure votes is numeric
     if "votes" in df.columns:
         df["votes"] = pd.to_numeric(df["votes"], errors="coerce").fillna(0).astype(int)
-        before_votes = len(df)
-        df = df[df["votes"] > 0]
-        logger.info(f"After filtering 0-vote restaurants: {len(df)} rows (removed {before_votes - len(df)})")
     else:
-        logger.warning("No 'votes' column found. Skipping vote filter.")
         df["votes"] = 0
 
-    # 8. Normalize location
-    df["location"] = df["location"].astype(str).str.strip().str.title()
-
-    # 9. Normalize restaurant name
+    # 7. Normalize location and city strings
+    df["location"] = df["location"].fillna("Unknown").astype(str).str.strip().str.title()
+    df["city"] = df["city"].fillna("").astype(str).str.strip().str.title()
     df["name"] = df["name"].astype(str).str.strip()
 
-    # 10. Normalize boolean columns
-    for col in ["has_online_delivery", "has_table_booking"]:
-        if col in df.columns:
-            df[col] = df[col].astype(str).str.strip().str.lower().map(
-                {"yes": True, "no": False, "true": True, "false": False}
-            ).fillna(False)
+    # 8. Ensure optional URL/image columns exist
+    for col in ["image_url", "zomato_url", "address"]:
+        if col not in df.columns:
+            df[col] = ""
 
-    # 11. Deduplicate by (name, location) — keep highest votes
+    # 9. Deduplicate by (name, city) — keep first occurrence
     before_dedup = len(df)
-    df = df.sort_values("votes", ascending=False).drop_duplicates(
-        subset=["name", "location"], keep="first"
-    )
+    df = df.drop_duplicates(subset=["name", "city"], keep="first")
     if before_dedup > len(df):
         logger.info(f"Removed {before_dedup - len(df)} duplicate entries")
 
@@ -151,22 +110,19 @@ def preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
 def _parse_rating(value) -> float:
     """
-    Parse rating values from the Zomato dataset.
+    Parse rating values to float, clamped between 0 and 5.
 
     Handles formats:
-        - "4.1/5"  → 4.1
-        - "4.1"    → 4.1
-        - "NEW"    → NaN (will be dropped)
-        - "-"      → NaN (will be dropped)
-        - ""       → NaN
-        - None     → NaN
-        - numeric  → float (clamped to 0-5)
+        - 4.1     → 4.1
+        - "4.1/5" → 4.1
+        - "NEW"   → NaN
+        - None    → NaN
 
     Args:
-        value: Raw rating value from dataset.
+        value: Raw rating value.
 
     Returns:
-        Float rating between 0 and 5, or NaN for unparseable values.
+        Float rating between 0 and 5, or NaN.
     """
     if pd.isna(value):
         return float("nan")
@@ -201,7 +157,10 @@ def _categorize_budget(cost: float) -> str:
 
     Returns:
         Budget category: 'low', 'medium', or 'high'.
+        Defaults to 'medium' if cost is 0 (unknown from listing page).
     """
+    if cost <= 0:
+        return "medium"  # Unknown cost — default to medium
     for category, (low, high) in BUDGET_THRESHOLDS.items():
         if low <= cost < high:
             return category

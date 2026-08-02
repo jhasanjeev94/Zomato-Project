@@ -2,6 +2,9 @@
 
 > Derived from [architecture.md](file:///Users/sanjeevjha/Desktop/Zomato%20Project/docs/architecture.md) and [context.md](file:///Users/sanjeevjha/Desktop/Zomato%20Project/context.md)
 
+> [!IMPORTANT]
+> **Data Source Change**: This plan now scrapes **live data directly from Zomato** (`https://www.zomato.com/{city}/restaurants`) instead of using the HuggingFace dataset. This gives us real-time, up-to-date restaurant data with images and URLs.
+
 ---
 
 ## Phase Overview
@@ -16,7 +19,7 @@ gantt
     Project Setup & Config           :p1, 2026-06-21, 1d
 
     section Phase 2
-    Data Ingestion & Preprocessing   :p2, after p1, 2d
+    Web Scraping & Data Pipeline     :p2, after p1, 3d
 
     section Phase 3
     Filtering & Integration Layer    :p3, after p2, 2d
@@ -72,20 +75,29 @@ Zomato Project/
 │   ├── css/
 │   ├── js/
 │   └── index.html           (placeholder)
+├── data/                     (scraped data cache)
+│   └── .gitkeep
 ├── docs/
 └── README.md
 ```
 
 ### `requirements.txt`
 
+> [!WARNING]
+> **Changed from previous plan**: Replaced `datasets>=2.14.0` (HuggingFace) with `beautifulsoup4`, `requests`, `lxml`, and `playwright` for web scraping from Zomato.
+
 ```
 fastapi>=0.100.0
 uvicorn>=0.23.0
 pandas>=2.0.0
-datasets>=2.14.0
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+lxml>=4.9.0
+playwright>=1.40.0
 groq>=0.4.0
 pydantic>=2.0.0
 python-dotenv>=1.0.0
+aiohttp>=3.9.0
 ```
 
 ### `config.py` — Key Implementation
@@ -101,7 +113,17 @@ class Settings:
     GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
     GROQ_FALLBACK_MODEL: str = os.getenv("GROQ_FALLBACK_MODEL", "llama-3.1-8b-instant")
     MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", "2048"))
-    DATASET_NAME: str = "ManikaSaini/zomato-restaurant-recommendation"
+
+    # Zomato scraping config
+    ZOMATO_BASE_URL: str = "https://www.zomato.com"
+    SUPPORTED_CITIES: list[str] = [
+        "mumbai", "delhi-ncr", "bangalore", "hyderabad",
+        "ahmedabad", "chennai", "kolkata", "pune",
+        "jaipur", "lucknow", "chandigarh", "goa",
+    ]
+    SCRAPE_CACHE_DIR: str = os.getenv("SCRAPE_CACHE_DIR", "data/")
+    SCRAPE_CACHE_TTL_HOURS: int = int(os.getenv("SCRAPE_CACHE_TTL_HOURS", "6"))
+    MAX_PAGES_PER_CITY: int = int(os.getenv("MAX_PAGES_PER_CITY", "5"))
 
 settings = Settings()
 ```
@@ -113,6 +135,9 @@ GROQ_API_KEY=your_groq_api_key_here
 GROQ_MODEL=llama-3.3-70b-versatile
 GROQ_FALLBACK_MODEL=llama-3.1-8b-instant
 MAX_TOKENS=2048
+SCRAPE_CACHE_DIR=data/
+SCRAPE_CACHE_TTL_HOURS=6
+MAX_PAGES_PER_CITY=5
 ```
 
 ### Deliverables
@@ -122,54 +147,291 @@ MAX_TOKENS=2048
 
 ---
 
-## Phase 2: Data Ingestion & Preprocessing
+## Phase 2: Web Scraping & Data Pipeline (Live Zomato Data)
 
-**Goal**: Load the Zomato dataset from HuggingFace, clean it, and cache it in memory.
+> [!IMPORTANT]
+> **Major change from previous plan**: Instead of loading a static HuggingFace dataset, we now scrape live restaurant data directly from `https://www.zomato.com/{city}/restaurants`. This provides real-time data including current ratings, reviews, images, and restaurant URLs.
 
-**Duration**: ~1–2 days
+**Goal**: Scrape restaurant data from Zomato's website, parse it, cache it locally, and serve a clean DataFrame.
+
+**Duration**: ~2–3 days
+
+### Data Source Strategy
+
+Zomato's restaurant listing pages embed **JSON-LD structured data** (`application/ld+json`) in the HTML, containing an `ItemList` with restaurant entries. Each entry includes:
+
+| Field | JSON-LD Path | Example |
+|-------|-------------|---------|
+| `name` | `item.name` | `"Tanatan"` |
+| `image` | `item.image` | `"https://b.zmtcdn.com/data/pictures/..."` |
+| `rating` | `item.aggregateRating.ratingValue` | `4.4` |
+| `review_count` | `item.aggregateRating.reviewCount` | `14` |
+| `url` | `item.url` | `"/mumbai/tanatan-dadar-shivaji-park/info"` |
+| `address` | `item.address.streetAddress` | `"Shop 8, T/13, 121, Ground Floor..."` |
+| `cuisines` | `item.servesCuisine` | `"North Indian, Mughlai, South Indian"` |
+
+**Scraping approach (two-tier)**:
+
+1. **Tier 1 — JSON-LD Extraction (Primary)**: Parse structured data from `<script type="application/ld+json">` tags. Fast, reliable, and doesn't require JavaScript rendering.
+2. **Tier 2 — Playwright Deep Scrape (Fallback/Enrichment)**: For additional fields (cost for two, online delivery, table booking) that are only in the dynamic HTML, use Playwright to render pages and extract data from restaurant detail pages.
 
 ### Tasks
 
 | # | Task | File(s) | Status |
 |---|------|---------|--------|
-| 2.1 | Implement HuggingFace dataset loader | `backend/services/data_loader.py` | ⬜ |
-| 2.2 | Implement preprocessing pipeline | `backend/utils/preprocessing.py` | ⬜ |
-| 2.3 | Add budget bucketing logic (low/medium/high) | `backend/utils/preprocessing.py` | ⬜ |
-| 2.4 | Add in-memory caching mechanism | `backend/services/data_loader.py` | ⬜ |
-| 2.5 | Write unit tests for data loading | `backend/tests/test_data_loader.py` | ⬜ |
+| 2.1 | Implement Zomato page scraper (JSON-LD extraction) | `backend/services/scraper.py` | ⬜ |
+| 2.2 | Implement pagination handler (multi-page scraping) | `backend/services/scraper.py` | ⬜ |
+| 2.3 | Implement restaurant detail page scraper (cost, features) | `backend/services/scraper.py` | ⬜ |
+| 2.4 | Implement local file caching (JSON) with TTL | `backend/services/data_cache.py` | ⬜ |
+| 2.5 | Implement preprocessing pipeline | `backend/utils/preprocessing.py` | ⬜ |
+| 2.6 | Add budget bucketing logic (low/medium/high) | `backend/utils/preprocessing.py` | ⬜ |
+| 2.7 | Implement unified data loader with cache-first strategy | `backend/services/data_loader.py` | ⬜ |
+| 2.8 | Add multi-city support | `backend/services/scraper.py` | ⬜ |
+| 2.9 | Write unit tests for scraping & data loading | `backend/tests/test_scraper.py` | ⬜ |
+
+### `scraper.py` — Key Implementation
+
+```python
+import json
+import time
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+from backend.config import settings
+
+# Browser-like headers to avoid being blocked
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    ),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+}
+
+# Rate limiting: minimum delay between requests
+REQUEST_DELAY_SECONDS = 2
+
+
+def scrape_city_restaurants(city: str, max_pages: int = 5) -> list[dict]:
+    """Scrape restaurant listings from Zomato for a given city.
+
+    Uses JSON-LD structured data embedded in Zomato's HTML pages.
+    Falls back to DOM parsing if JSON-LD is unavailable.
+    """
+    all_restaurants = []
+
+    for page in range(1, max_pages + 1):
+        url = f"{settings.ZOMATO_BASE_URL}/{city}/restaurants?page={page}"
+        restaurants = _scrape_page(url, city)
+
+        if not restaurants:
+            break  # No more results
+
+        all_restaurants.extend(restaurants)
+        time.sleep(REQUEST_DELAY_SECONDS)  # Rate limit
+
+    return _deduplicate(all_restaurants)
+
+
+def _scrape_page(url: str, city: str) -> list[dict]:
+    """Scrape a single page and extract restaurant data from JSON-LD."""
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=15)
+        response.raise_for_status()
+    except requests.RequestException as e:
+        print(f"[Scraper] Failed to fetch {url}: {e}")
+        return []
+
+    soup = BeautifulSoup(response.text, "lxml")
+    restaurants = []
+
+    # Strategy 1: Extract from JSON-LD (preferred — structured data)
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(script.string)
+            if data.get("@type") == "ItemList":
+                for item in data.get("itemListElement", []):
+                    restaurant = item.get("item", {})
+                    if restaurant.get("@type") == "Restaurant":
+                        parsed = _parse_jsonld_restaurant(restaurant, city)
+                        if parsed:
+                            restaurants.append(parsed)
+        except (json.JSONDecodeError, AttributeError):
+            continue
+
+    return restaurants
+
+
+def _parse_jsonld_restaurant(data: dict, city: str) -> dict | None:
+    """Parse a single restaurant entry from JSON-LD schema."""
+    try:
+        rating_data = data.get("aggregateRating", {})
+        address_data = data.get("address", {})
+
+        return {
+            "name": data.get("name", "").strip(),
+            "city": city.replace("-", " ").title(),
+            "location": _extract_location_from_url(data.get("url", "")),
+            "address": address_data.get("streetAddress", "").strip(),
+            "cuisines": data.get("servesCuisine", "").strip(),
+            "aggregate_rating": float(rating_data.get("ratingValue", 0)),
+            "votes": int(rating_data.get("reviewCount", 0)),
+            "image_url": data.get("image", ""),
+            "zomato_url": settings.ZOMATO_BASE_URL + data.get("url", ""),
+            "average_cost_for_two": 0,  # Enriched later from detail page
+        }
+    except (ValueError, TypeError):
+        return None
+
+
+def _extract_location_from_url(url: str) -> str:
+    """Extract locality from Zomato restaurant URL.
+
+    Example: '/mumbai/tanatan-dadar-shivaji-park/info'
+             → 'Dadar Shivaji Park'
+    """
+    if not url:
+        return "Unknown"
+    parts = url.strip("/").split("/")
+    if len(parts) >= 2:
+        # The slug is like 'restaurant-name-locality'
+        slug = parts[1]
+        # Try to extract location — typically the last part after restaurant name
+        segments = slug.split("-")
+        if len(segments) > 2:
+            # Heuristic: take the last 2-3 segments as locality
+            locality = " ".join(segments[-3:]).title()
+            return locality
+    return "Unknown"
+
+
+def _deduplicate(restaurants: list[dict]) -> list[dict]:
+    """Remove duplicate restaurants by name + city."""
+    seen = set()
+    unique = []
+    for r in restaurants:
+        key = (r["name"].lower(), r["city"].lower())
+        if key not in seen:
+            seen.add(key)
+            unique.append(r)
+    return unique
+```
+
+### `data_cache.py` — Key Implementation
+
+```python
+import json
+import os
+import time
+from pathlib import Path
+from backend.config import settings
+
+CACHE_DIR = Path(settings.SCRAPE_CACHE_DIR)
+
+
+def get_cached_data(city: str) -> list[dict] | None:
+    """Return cached restaurant data if fresh, else None."""
+    cache_file = CACHE_DIR / f"{city}_restaurants.json"
+    if not cache_file.exists():
+        return None
+
+    # Check TTL
+    file_age_hours = (time.time() - cache_file.stat().st_mtime) / 3600
+    if file_age_hours > settings.SCRAPE_CACHE_TTL_HOURS:
+        return None  # Stale cache
+
+    with open(cache_file, "r") as f:
+        return json.load(f)
+
+
+def save_to_cache(city: str, data: list[dict]) -> None:
+    """Save scraped data to local JSON cache."""
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    cache_file = CACHE_DIR / f"{city}_restaurants.json"
+    with open(cache_file, "w") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+def clear_cache(city: str = None) -> None:
+    """Clear cache for a specific city or all cities."""
+    if city:
+        cache_file = CACHE_DIR / f"{city}_restaurants.json"
+        if cache_file.exists():
+            cache_file.unlink()
+    else:
+        for f in CACHE_DIR.glob("*_restaurants.json"):
+            f.unlink()
+```
 
 ### `data_loader.py` — Key Implementation
 
 ```python
-from datasets import load_dataset
 import pandas as pd
+from backend.services.scraper import scrape_city_restaurants
+from backend.services.data_cache import get_cached_data, save_to_cache
 from backend.utils.preprocessing import preprocess_dataframe
 from backend.config import settings
 
-_cached_df: pd.DataFrame | None = None
+_cached_dfs: dict[str, pd.DataFrame] = {}
 
-def load_restaurant_data() -> pd.DataFrame:
-    """Load and cache the Zomato dataset from HuggingFace."""
-    global _cached_df
-    if _cached_df is not None:
-        return _cached_df
 
-    dataset = load_dataset(settings.DATASET_NAME, split="train")
-    df = dataset.to_pandas()
-    _cached_df = preprocess_dataframe(df)
-    return _cached_df
+def load_restaurant_data(city: str = "mumbai") -> pd.DataFrame:
+    """Load restaurant data with cache-first strategy.
 
-def get_unique_locations() -> list[str]:
-    """Return sorted list of all unique locations."""
-    df = load_restaurant_data()
-    return sorted(df["location"].unique().tolist())
+    1. Check in-memory cache
+    2. Check file cache (JSON)
+    3. Scrape from Zomato (last resort)
+    """
+    city = city.lower().replace(" ", "-")
 
-def get_unique_cuisines() -> list[str]:
-    """Return sorted list of all unique cuisines."""
-    df = load_restaurant_data()
-    # Explode multi-cuisine entries
+    # 1. In-memory cache
+    if city in _cached_dfs:
+        return _cached_dfs[city]
+
+    # 2. File cache
+    cached = get_cached_data(city)
+    if cached:
+        df = pd.DataFrame(cached)
+        df = preprocess_dataframe(df)
+        _cached_dfs[city] = df
+        return df
+
+    # 3. Live scrape
+    raw_data = scrape_city_restaurants(city, max_pages=settings.MAX_PAGES_PER_CITY)
+
+    if not raw_data:
+        return pd.DataFrame()  # Empty — city not found or scrape failed
+
+    save_to_cache(city, raw_data)
+    df = pd.DataFrame(raw_data)
+    df = preprocess_dataframe(df)
+    _cached_dfs[city] = df
+    return df
+
+
+def get_unique_cities() -> list[str]:
+    """Return list of supported cities."""
+    return [c.replace("-", " ").title() for c in settings.SUPPORTED_CITIES]
+
+
+def get_unique_locations(city: str = "mumbai") -> list[str]:
+    """Return sorted list of all unique locations for a city."""
+    df = load_restaurant_data(city)
+    if df.empty:
+        return []
+    return sorted(df["location"].dropna().unique().tolist())
+
+
+def get_unique_cuisines(city: str = "mumbai") -> list[str]:
+    """Return sorted list of all unique cuisines for a city."""
+    df = load_restaurant_data(city)
+    if df.empty:
+        return []
     all_cuisines = df["cuisines"].str.split(",").explode().str.strip().unique()
-    return sorted(all_cuisines.tolist())
+    return sorted([c for c in all_cuisines.tolist() if c])
 ```
 
 ### `preprocessing.py` — Key Implementation
@@ -183,47 +445,92 @@ BUDGET_THRESHOLDS = {
     "high": (1500, float("inf")),
 }
 
+
 def preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-    """Clean and standardize the raw Zomato dataset."""
+    """Clean and standardize the scraped Zomato data."""
     # 1. Drop rows with missing critical fields
-    df = df.dropna(subset=["name", "location", "aggregate_rating"])
+    df = df.dropna(subset=["name"])
 
     # 2. Normalize cuisine strings
     df["cuisines"] = df["cuisines"].fillna("").str.strip().str.lower()
 
     # 3. Parse cost to numeric
-    df["average_cost_for_two"] = pd.to_numeric(
-        df["average_cost_for_two"].astype(str).str.replace(r"[^\d.]", "", regex=True),
-        errors="coerce"
-    ).fillna(0)
+    if "average_cost_for_two" in df.columns:
+        df["average_cost_for_two"] = pd.to_numeric(
+            df["average_cost_for_two"].astype(str).str.replace(r"[^\d.]", "", regex=True),
+            errors="coerce"
+        ).fillna(0)
 
     # 4. Bucket cost into categories
     df["budget_category"] = df["average_cost_for_two"].apply(_categorize_budget)
 
-    # 5. Filter out restaurants with 0 votes
-    df = df[df["votes"] > 0]
+    # 5. Ensure rating is numeric
+    df["aggregate_rating"] = pd.to_numeric(df["aggregate_rating"], errors="coerce").fillna(0)
 
-    # 6. Normalize location
-    df["location"] = df["location"].str.strip().str.title()
+    # 6. Ensure votes is numeric
+    df["votes"] = pd.to_numeric(df["votes"], errors="coerce").fillna(0).astype(int)
+
+    # 7. Normalize location
+    df["location"] = df["location"].fillna("Unknown").str.strip().str.title()
+
+    # 8. Normalize city
+    df["city"] = df["city"].fillna("").str.strip().str.title()
 
     return df.reset_index(drop=True)
+
 
 def _categorize_budget(cost: float) -> str:
     for category, (low, high) in BUDGET_THRESHOLDS.items():
         if low <= cost < high:
             return category
-    return "high"
+    return "medium"  # Default if cost is 0 (unknown from listing page)
+```
+
+### Scraping Architecture
+
+```
+Zomato Website (Live)
+     │
+     ├── GET /mumbai/restaurants?page=1
+     ├── GET /mumbai/restaurants?page=2
+     └── GET /mumbai/restaurants?page=N
+          │
+          ▼
+   HTML Response
+          │
+          ├── Parse <script type="application/ld+json"> tags
+          │         │
+          │         └── Extract ItemList → Restaurant entries
+          │              • name, cuisines, rating, votes, image, url, address
+          │
+          └── (Optional) Parse DOM for additional data
+                    • cost_for_two, features, etc.
+          │
+          ▼
+   JSON Cache (data/{city}_restaurants.json)
+          │
+          ▼
+   Pandas DataFrame (in-memory, preprocessed)
+          │
+          ▼
+   Filter Engine → LLM → Recommendations
 ```
 
 ### Verification
-- Print DataFrame shape, column dtypes, sample rows after preprocessing
-- Verify budget bucketing distribution
-- Confirm no nulls in critical columns
+- Print DataFrame shape, column dtypes, sample rows after scraping
+- Verify data was cached to `data/` directory
+- Confirm deduplication logic removes duplicates
+- Test with multiple cities (Mumbai, Delhi, Bangalore)
+- Verify rate limiting (2s between requests)
 
 ### Deliverables
-- ✅ Working dataset loader with caching
+- ✅ Working web scraper extracting live Zomato data
+- ✅ JSON-LD parser for structured restaurant data
+- ✅ File-based caching with configurable TTL
+- ✅ In-memory caching for fast repeated queries
 - ✅ Preprocessing pipeline (nulls, normalization, bucketing)
-- ✅ Helper functions for locations/cuisines lists
+- ✅ Multi-city support (12 Indian cities)
+- ✅ Rate-limited, polite scraping with proper User-Agent
 
 ---
 
@@ -244,12 +551,16 @@ def _categorize_budget(cost: float) -> str:
 
 ### `schemas.py` — Key Implementation
 
+> [!NOTE]
+> Updated to include `city` field (required for multi-city scraping) and new fields from live Zomato data: `image_url`, `zomato_url`.
+
 ```python
 from pydantic import BaseModel, Field
 from typing import Optional, Literal
 
 class UserPreferences(BaseModel):
-    location: str = Field(..., description="City or area name")
+    city: str = Field(..., description="City name (e.g., 'mumbai', 'delhi-ncr')")
+    location: Optional[str] = Field(None, description="Specific locality within the city")
     budget: Literal["low", "medium", "high"] = Field(..., description="Budget category")
     cuisine: Optional[str] = Field(None, description="Preferred cuisine type")
     min_rating: float = Field(3.5, ge=0.0, le=5.0, description="Minimum rating")
@@ -262,6 +573,8 @@ class RestaurantRecommendation(BaseModel):
     rating: float
     estimated_cost: str
     explanation: str
+    image_url: Optional[str] = None
+    zomato_url: Optional[str] = None
 
 class RecommendationResponse(BaseModel):
     query: UserPreferences
@@ -282,13 +595,15 @@ def filter_restaurants(df: pd.DataFrame, prefs: UserPreferences) -> pd.DataFrame
     """Apply cascading filters based on user preferences."""
     filtered = df.copy()
 
-    # 1. Filter by location (case-insensitive)
-    filtered = filtered[
-        filtered["location"].str.lower() == prefs.location.lower()
-    ]
+    # 1. Filter by location within city (optional — if specified)
+    if prefs.location:
+        filtered = filtered[
+            filtered["location"].str.lower().str.contains(prefs.location.lower(), na=False)
+        ]
 
-    # 2. Filter by budget category
-    filtered = filtered[filtered["budget_category"] == prefs.budget]
+    # 2. Filter by budget category (skip if cost data is unknown/zero)
+    if filtered["average_cost_for_two"].sum() > 0:
+        filtered = filtered[filtered["budget_category"] == prefs.budget]
 
     # 3. Filter by cuisine (partial match)
     if prefs.cuisine:
@@ -312,13 +627,13 @@ def filter_restaurants(df: pd.DataFrame, prefs: UserPreferences) -> pd.DataFrame
 ### Filter Pipeline Flow
 
 ```
-User Input → Location Filter → Budget Filter → Cuisine Filter → Rating Filter → Sort → Top 15
-                                                                                          │
-                                                                              Format for LLM Prompt
+User Input → City Scrape → Location Filter → Budget Filter → Cuisine Filter → Rating Filter → Sort → Top 15
+                                                                                                        │
+                                                                                            Format for LLM Prompt
 ```
 
 ### Deliverables
-- ✅ Pydantic models for request/response
+- ✅ Pydantic models for request/response (with city field)
 - ✅ Cascading filter engine with configurable candidate limit
 - ✅ Edge case handling (no results, relaxed filters)
 
@@ -342,6 +657,9 @@ User Input → Location Filter → Budget Filter → Cuisine Filter → Rating F
 
 ### `prompt_builder.py` — Key Implementation
 
+> [!NOTE]
+> Updated prompt to include `image_url` and `zomato_url` from live scraped data for richer recommendations.
+
 ```python
 import pandas as pd
 from backend.models.schemas import UserPreferences
@@ -352,10 +670,10 @@ def build_recommendation_prompt(
 ) -> tuple[str, str]:
     """Build system and user prompts for the LLM."""
 
-    system_prompt = """You are an expert restaurant recommendation assistant. 
-Given a list of restaurants and user preferences, analyze each option and 
-recommend the top 5 restaurants. For each recommendation, provide a clear, 
-compelling explanation of why it's a great fit for the user.
+    system_prompt = """You are an expert restaurant recommendation assistant.
+Given a list of restaurants scraped from Zomato and user preferences, analyze
+each option and recommend the top 5 restaurants. For each recommendation,
+provide a clear, compelling explanation of why it's a great fit for the user.
 
 IMPORTANT: Return your response as valid JSON with this exact structure:
 {
@@ -366,7 +684,9 @@ IMPORTANT: Return your response as valid JSON with this exact structure:
       "cuisine": "...",
       "rating": 4.5,
       "estimated_cost": "₹... for two",
-      "explanation": "..."
+      "explanation": "...",
+      "image_url": "...",
+      "zomato_url": "..."
     }
   ],
   "summary": "A brief overall summary of the recommendations"
@@ -375,23 +695,28 @@ IMPORTANT: Return your response as valid JSON with this exact structure:
     # Format restaurant data as a numbered list
     restaurant_list = []
     for i, (_, row) in enumerate(candidates.iterrows(), 1):
+        cost_str = f"₹{int(row['average_cost_for_two'])} for two" if row['average_cost_for_two'] > 0 else "Price N/A"
         restaurant_list.append(
             f"{i}. {row['name']} | Cuisine: {row['cuisines']} | "
             f"Rating: {row['aggregate_rating']}/5 | "
-            f"Cost: ₹{row['average_cost_for_two']} for two | "
-            f"Votes: {row['votes']}"
+            f"Cost: {cost_str} | "
+            f"Votes: {row['votes']} | "
+            f"Location: {row.get('location', 'N/A')} | "
+            f"Image: {row.get('image_url', '')} | "
+            f"URL: {row.get('zomato_url', '')}"
         )
 
     restaurants_text = "\n".join(restaurant_list)
 
     user_prompt = f"""User Preferences:
-- Location: {prefs.location}
+- City: {prefs.city}
+- Location: {prefs.location or "Any"}
 - Budget: {prefs.budget}
 - Cuisine: {prefs.cuisine or "Any"}
 - Minimum Rating: {prefs.min_rating}
 - Additional: {prefs.additional_preferences or "None"}
 
-Available Restaurants:
+Available Restaurants (from live Zomato data):
 {restaurants_text}
 
 Please recommend the top 5 restaurants from this list and explain your reasoning."""
@@ -480,33 +805,43 @@ groq_client = GroqClient()
 |---|------|---------|--------|
 | 5.1 | Create FastAPI app with CORS and lifespan | `backend/main.py` | ⬜ |
 | 5.2 | Implement `POST /api/recommend` endpoint | `backend/main.py` | ⬜ |
-| 5.3 | Implement `GET /api/locations` endpoint | `backend/main.py` | ⬜ |
-| 5.4 | Implement `GET /api/cuisines` endpoint | `backend/main.py` | ⬜ |
-| 5.5 | Implement `GET /api/health` and `GET /api/stats` | `backend/main.py` | ⬜ |
-| 5.6 | Add error handling middleware | `backend/main.py` | ⬜ |
-| 5.7 | Test all endpoints via Swagger UI | Manual testing | ⬜ |
+| 5.3 | Implement `GET /api/cities` endpoint | `backend/main.py` | ⬜ |
+| 5.4 | Implement `GET /api/locations/{city}` endpoint | `backend/main.py` | ⬜ |
+| 5.5 | Implement `GET /api/cuisines/{city}` endpoint | `backend/main.py` | ⬜ |
+| 5.6 | Implement `GET /api/health` and `GET /api/stats/{city}` | `backend/main.py` | ⬜ |
+| 5.7 | Implement `POST /api/scrape/{city}` (force refresh) | `backend/main.py` | ⬜ |
+| 5.8 | Add error handling middleware | `backend/main.py` | ⬜ |
+| 5.9 | Test all endpoints via Swagger UI | Manual testing | ⬜ |
 
 ### `main.py` — Key Implementation
+
+> [!NOTE]
+> Updated endpoints to support multi-city architecture. Added `/api/cities`, city-specific location/cuisine endpoints, and a manual scrape refresh endpoint.
 
 ```python
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from backend.models.schemas import UserPreferences, RecommendationResponse
-from backend.services.data_loader import load_restaurant_data, get_unique_locations, get_unique_cuisines
+from backend.services.data_loader import (
+    load_restaurant_data, get_unique_cities,
+    get_unique_locations, get_unique_cuisines
+)
+from backend.services.data_cache import clear_cache
 from backend.services.filter_engine import filter_restaurants
 from backend.services.prompt_builder import build_recommendation_prompt
 from backend.services.llm_client import groq_client
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: preload dataset
-    load_restaurant_data()
+    # Startup: preload default city (Mumbai)
+    load_restaurant_data("mumbai")
     yield
 
 app = FastAPI(
     title="Zomato AI Recommendation API",
-    version="1.0.0",
+    description="AI-powered restaurant recommendations using live Zomato data",
+    version="2.0.0",
     lifespan=lifespan,
 )
 
@@ -519,29 +854,54 @@ app.add_middleware(
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "healthy"}
+    return {"status": "healthy", "data_source": "zomato.com (live scraping)"}
 
-@app.get("/api/locations")
-async def list_locations():
-    return {"locations": get_unique_locations()}
+@app.get("/api/cities")
+async def list_cities():
+    return {"cities": get_unique_cities()}
 
-@app.get("/api/cuisines")
-async def list_cuisines():
-    return {"cuisines": get_unique_cuisines()}
+@app.get("/api/locations/{city}")
+async def list_locations(city: str):
+    return {"locations": get_unique_locations(city)}
 
-@app.get("/api/stats")
-async def dataset_stats():
-    df = load_restaurant_data()
+@app.get("/api/cuisines/{city}")
+async def list_cuisines(city: str):
+    return {"cuisines": get_unique_cuisines(city)}
+
+@app.get("/api/stats/{city}")
+async def dataset_stats(city: str):
+    df = load_restaurant_data(city)
+    if df.empty:
+        raise HTTPException(status_code=404, detail=f"No data found for city: {city}")
     return {
+        "city": city,
         "total_restaurants": len(df),
         "total_locations": df["location"].nunique(),
-        "total_cuisines": df["cuisines"].nunique(),
+        "cuisines_count": df["cuisines"].str.split(",").explode().str.strip().nunique(),
         "average_rating": round(df["aggregate_rating"].mean(), 2),
+        "data_source": "zomato.com",
+    }
+
+@app.post("/api/scrape/{city}")
+async def force_scrape(city: str):
+    """Force re-scrape of restaurant data for a city (clears cache)."""
+    clear_cache(city)
+    df = load_restaurant_data(city)
+    return {
+        "message": f"Scraped {len(df)} restaurants for {city}",
+        "total_restaurants": len(df),
     }
 
 @app.post("/api/recommend", response_model=RecommendationResponse)
 async def recommend(prefs: UserPreferences):
-    df = load_restaurant_data()
+    df = load_restaurant_data(prefs.city)
+
+    if df.empty:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No restaurant data available for {prefs.city}. Try scraping first."
+        )
+
     candidates = filter_restaurants(df, prefs)
 
     if candidates.empty:
@@ -565,18 +925,21 @@ async def recommend(prefs: UserPreferences):
 
 | Endpoint | Test | Expected |
 |----------|------|----------|
-| `GET /api/health` | Hit endpoint | `{"status": "healthy"}` |
-| `GET /api/locations` | Hit endpoint | List of city names |
-| `GET /api/cuisines` | Hit endpoint | List of cuisine types |
-| `GET /api/stats` | Hit endpoint | Restaurant count, avg rating |
+| `GET /api/health` | Hit endpoint | `{"status": "healthy", "data_source": "zomato.com"}` |
+| `GET /api/cities` | Hit endpoint | List of 12 Indian cities |
+| `GET /api/locations/mumbai` | Hit endpoint | Localities in Mumbai |
+| `GET /api/cuisines/mumbai` | Hit endpoint | Cuisine types in Mumbai |
+| `GET /api/stats/mumbai` | Hit endpoint | Restaurant count, avg rating |
+| `POST /api/scrape/mumbai` | Force re-scrape | Count of scraped restaurants |
 | `POST /api/recommend` | Valid request | AI recommendations JSON |
-| `POST /api/recommend` | Invalid location | 404 with helpful message |
+| `POST /api/recommend` | Invalid city | 404 with helpful message |
 | `POST /api/recommend` | Missing fields | 422 validation error |
 
 ### Deliverables
-- ✅ All 5 endpoints working
+- ✅ All 7 endpoints working
+- ✅ Multi-city support via URL parameters
+- ✅ Manual scrape refresh capability
 - ✅ CORS enabled for frontend
-- ✅ Dataset preloaded at startup
 - ✅ Swagger docs at `/docs`
 
 ---
@@ -593,24 +956,30 @@ async def recommend(prefs: UserPreferences):
 |---|------|---------|--------|
 | 6.1 | Create HTML structure with semantic elements | `frontend/index.html` | ⬜ |
 | 6.2 | Design CSS with dark theme, gradients, animations | `frontend/css/styles.css` | ⬜ |
-| 6.3 | Build preference form (location, budget, cuisine, rating) | `frontend/index.html` | ⬜ |
-| 6.4 | Populate dropdowns from API (`/locations`, `/cuisines`) | `frontend/js/app.js` | ⬜ |
-| 6.5 | Implement API call to `/api/recommend` | `frontend/js/app.js` | ⬜ |
-| 6.6 | Build recommendation card components | `frontend/js/app.js` | ⬜ |
-| 6.7 | Add loading states and error handling | `frontend/js/app.js` | ⬜ |
-| 6.8 | Add responsive design for mobile/tablet | `frontend/css/styles.css` | ⬜ |
+| 6.3 | Build preference form (city, location, budget, cuisine, rating) | `frontend/index.html` | ⬜ |
+| 6.4 | Populate city dropdown from API (`/cities`) | `frontend/js/app.js` | ⬜ |
+| 6.5 | Cascade-load locations and cuisines on city change | `frontend/js/app.js` | ⬜ |
+| 6.6 | Implement API call to `/api/recommend` | `frontend/js/app.js` | ⬜ |
+| 6.7 | Build recommendation card components with images | `frontend/js/app.js` | ⬜ |
+| 6.8 | Add "View on Zomato" link per card | `frontend/js/app.js` | ⬜ |
+| 6.9 | Add loading states and error handling | `frontend/js/app.js` | ⬜ |
+| 6.10 | Add responsive design for mobile/tablet | `frontend/css/styles.css` | ⬜ |
 
 ### UI Layout
+
+> [!NOTE]
+> Updated to include city selector, restaurant images from Zomato, and "View on Zomato" links.
 
 ```
 ┌──────────────────────────────────────────────────────┐
 │  🍽️  Zomato AI Restaurant Recommender                │
-│  ─────────────────────────────────────────────────── │
+│  ─── Powered by Live Zomato Data ─────────────────── │
 │                                                      │
 │  ┌─ Preference Form ──────────────────────────────┐  │
-│  │  📍 Location: [  Dropdown  ▾]                  │  │
+│  │  🏙️ City:     [  Dropdown  ▾]  ← NEW           │  │
+│  │  📍 Location: [  Dropdown  ▾]  ← cascades      │  │
 │  │  💰 Budget:   [Low] [Medium] [High]            │  │
-│  │  🍕 Cuisine:  [  Dropdown  ▾]                  │  │
+│  │  🍕 Cuisine:  [  Dropdown  ▾]  ← cascades      │  │
 │  │  ⭐ Min Rating: [━━━━━●━━━━━] 3.5              │  │
 │  │  📝 Additional: [  Text input  ]               │  │
 │  │                                                │  │
@@ -618,19 +987,17 @@ async def recommend(prefs: UserPreferences):
 │  └────────────────────────────────────────────────┘  │
 │                                                      │
 │  ┌─ AI Summary ───────────────────────────────────┐  │
-│  │  "Found 12 Italian restaurants in Bangalore..." │  │
+│  │  "Found 12 Italian restaurants in Mumbai..."   │  │
 │  └────────────────────────────────────────────────┘  │
 │                                                      │
 │  ┌─ Card 1 ──────┐  ┌─ Card 2 ──────┐              │
-│  │ Toscano        │  │ Little Italy   │              │
-│  │ ⭐ 4.5  ₹₹    │  │ ⭐ 4.3  ₹₹    │              │
-│  │ Italian        │  │ Italian        │              │
-│  │ ₹1200 for two  │  │ ₹1000 for two  │              │
+│  │ [Restaurant    │  │ [Restaurant    │              │
+│  │  Image]        │  │  Image]        │  ← images   │
+│  │ Tanatan        │  │ Pa Pa Ya       │              │
+│  │ ⭐ 4.4  ₹₹    │  │ ⭐ 4.2  ₹₹    │              │
+│  │ North Indian   │  │ Chinese, Asian │              │
 │  │ [AI Reason ▾]  │  │ [AI Reason ▾]  │              │
-│  └────────────────┘  └────────────────┘              │
-│                                                      │
-│  ┌─ Card 3 ──────┐  ┌─ Card 4 ──────┐              │
-│  │ ...            │  │ ...            │              │
+│  │ [View on Zomato]│ │ [View on Zomato]│ ← link     │
 │  └────────────────┘  └────────────────┘              │
 └──────────────────────────────────────────────────────┘
 ```
@@ -642,16 +1009,18 @@ async def recommend(prefs: UserPreferences):
 | **Theme** | Dark mode with gradient accents |
 | **Font** | Google Fonts — `Inter` or `Outfit` |
 | **Cards** | Glassmorphism effect with subtle borders |
+| **Images** | Restaurant photos from Zomato CDN |
 | **Buttons** | Gradient fill with hover glow animation |
 | **Rating** | Star icons (filled/empty) with gold color |
 | **Budget** | Toggle buttons with active state highlight |
 | **Loading** | Skeleton cards + pulsing animation |
 | **Transitions** | Cards fade-in with staggered delay |
+| **Zomato Links** | Red-accent "View on Zomato" button per card |
 
 ### Deliverables
-- ✅ Fully functional preference form
-- ✅ Dynamic dropdowns populated from API
-- ✅ Recommendation cards with AI explanations
+- ✅ Fully functional preference form with city selector
+- ✅ Cascading dropdowns (city → locations + cuisines)
+- ✅ Recommendation cards with Zomato images and links
 - ✅ Loading, empty, and error states
 - ✅ Responsive across desktop, tablet, mobile
 
@@ -667,30 +1036,39 @@ async def recommend(prefs: UserPreferences):
 
 | # | Task | File(s) | Status |
 |---|------|---------|--------|
-| 7.1 | Full end-to-end test: form → API → LLM → display | All | ⬜ |
-| 7.2 | Test edge cases (no results, API timeout, bad input) | All | ⬜ |
-| 7.3 | Test across multiple locations and cuisines | Manual | ⬜ |
-| 7.4 | Performance check (response time < 5s) | Manual | ⬜ |
+| 7.1 | Full end-to-end test: form → scrape → API → LLM → display | All | ⬜ |
+| 7.2 | Test edge cases (no results, API timeout, scrape failure) | All | ⬜ |
+| 7.3 | Test across multiple cities and cuisines | Manual | ⬜ |
+| 7.4 | Performance check (response time < 10s including scrape) | Manual | ⬜ |
 | 7.5 | Mobile responsiveness testing | Manual | ⬜ |
-| 7.6 | Write README with setup instructions | `README.md` | ⬜ |
-| 7.7 | Add `.gitignore` for Python/Node artifacts | `.gitignore` | ⬜ |
-| 7.8 | Final code cleanup and documentation | All | ⬜ |
+| 7.6 | Verify scraping rate limits and caching behavior | Manual | ⬜ |
+| 7.7 | Write README with setup instructions | `README.md` | ⬜ |
+| 7.8 | Add `.gitignore` for Python/Node artifacts and cached data | `.gitignore` | ⬜ |
+| 7.9 | Final code cleanup and documentation | All | ⬜ |
 
 ### README Template
 
 ```markdown
 # 🍽️ Zomato AI Restaurant Recommender
 
-AI-powered restaurant recommendation system using Groq LLM.
+AI-powered restaurant recommendation system using live Zomato data and Groq LLM.
+
+## Features
+- 🔍 **Live Data**: Scrapes restaurant data directly from zomato.com
+- 🏙️ **Multi-City**: Supports 12+ Indian cities
+- 🤖 **AI-Powered**: Uses Groq LLM for intelligent recommendations
+- 🖼️ **Rich Cards**: Displays restaurant images and Zomato links
+- ⚡ **Smart Caching**: Cached data with configurable TTL
 
 ## Setup
 
 1. Clone the repository
 2. Create virtual environment: `python -m venv venv && source venv/bin/activate`
 3. Install dependencies: `pip install -r backend/requirements.txt`
-4. Copy `.env.example` to `.env` and add your Groq API key
-5. Run the server: `uvicorn backend.main:app --reload`
-6. Open `frontend/index.html` in your browser
+4. Install Playwright browsers: `playwright install chromium`
+5. Copy `.env.example` to `.env` and add your Groq API key
+6. Run the server: `uvicorn backend.main:app --reload`
+7. Open `frontend/index.html` in your browser
 
 ## API Documentation
 
@@ -701,15 +1079,16 @@ Visit `http://localhost:8000/docs` for interactive Swagger UI.
 
 | Scenario | Input | Expected Output |
 |----------|-------|-----------------|
-| Happy path | Location: Bangalore, Budget: Medium, Cuisine: Italian, Rating: 4.0 | 5 Italian restaurant cards with explanations |
-| No cuisine filter | Location: Delhi, Budget: Low, Rating: 3.0 | 5 mixed-cuisine recommendations |
-| No results | Location: "NonExistentCity", Budget: High | Friendly "no results" message |
-| High rating filter | Rating: 4.8, any location | Few or no results with suggestion to lower threshold |
+| Happy path | City: Mumbai, Budget: Medium, Cuisine: North Indian, Rating: 4.0 | 5 restaurant cards with images |
+| No cuisine filter | City: Delhi, Budget: Low, Rating: 3.0 | 5 mixed-cuisine recommendations |
+| No results | City: Mumbai, Location: "NonExistentArea" | Friendly "no results" message |
+| Scrape fresh | POST `/api/scrape/mumbai` | New data scraped and cached |
+| Multi-city | City: Bangalore, then City: Pune | Different restaurants for each city |
 | Free-text preferences | Additional: "rooftop seating, date night" | Recommendations influenced by preferences |
 
 ### Deliverables
 - ✅ All happy-path and edge-case tests passing
-- ✅ Response time under 5 seconds
+- ✅ Response time under 10 seconds (cached) / 30 seconds (fresh scrape)
 - ✅ README with full setup guide
 - ✅ Clean, documented codebase
 
@@ -719,7 +1098,7 @@ Visit `http://localhost:8000/docs` for interactive Swagger UI.
 
 ```mermaid
 graph LR
-    P1["Phase 1<br/>Project Setup"] --> P2["Phase 2<br/>Data Ingestion"]
+    P1["Phase 1<br/>Project Setup"] --> P2["Phase 2<br/>Web Scraping"]
     P2 --> P3["Phase 3<br/>Filter Engine"]
     P3 --> P4["Phase 4<br/>Groq LLM"]
     P4 --> P5["Phase 5<br/>FastAPI Backend"]
@@ -739,9 +1118,26 @@ graph LR
 | Phase | Focus | Key Output |
 |-------|-------|------------|
 | **Phase 1** | Project Setup | Scaffolded project, dependencies, config |
-| **Phase 2** | Data Ingestion | Cleaned DataFrame cached in memory |
+| **Phase 2** | Web Scraping | Live Zomato scraper with caching |
 | **Phase 3** | Filtering | Pydantic schemas + multi-criteria filter engine |
 | **Phase 4** | Groq LLM | Prompt builder + Groq client with retry logic |
-| **Phase 5** | Backend API | 5 REST endpoints, Swagger docs |
-| **Phase 6** | Frontend UI | Polished dark-theme UI with cards |
+| **Phase 5** | Backend API | 7 REST endpoints, Swagger docs |
+| **Phase 6** | Frontend UI | Polished dark-theme UI with Zomato images |
 | **Phase 7** | Integration | E2E tested, documented, production-ready |
+
+---
+
+## Key Differences from Previous Plan (HuggingFace → Live Zomato)
+
+| Aspect | Previous (HuggingFace) | Current (Live Zomato) |
+|--------|----------------------|----------------------|
+| **Data Source** | Static dataset (`ManikaSaini/zomato-restaurant-recommendation`) | Live scraping from `zomato.com/{city}/restaurants` |
+| **Data Freshness** | Fixed snapshot (may be outdated) | Real-time with configurable cache TTL |
+| **Dependencies** | `datasets` (HuggingFace) | `beautifulsoup4`, `requests`, `lxml`, `playwright` |
+| **Cities** | Whatever was in the dataset | 12 configurable Indian cities |
+| **Images** | Not available | Restaurant photos from Zomato CDN |
+| **Restaurant URLs** | Not available | Direct links to Zomato restaurant pages |
+| **Cost Data** | Included in dataset | Scraped from detail pages (Phase 2 enrichment) |
+| **Rate Limiting** | Not needed | 2s delay between requests |
+| **Caching** | In-memory only | File cache (JSON) + in-memory |
+| **Setup Complexity** | Simple (`pip install datasets`) | Requires Playwright install for deep scraping |
